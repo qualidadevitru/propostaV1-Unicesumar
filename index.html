@@ -81,11 +81,20 @@ main{min-width:0;padding:28px 16px 60px}
 .area .qtd{font-size:.78rem;font-weight:700;color:var(--brand)}
 .lista{display:flex;flex-direction:column}
 .grupo-tit{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 2px 6px}
-.curso{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 12px;border-radius:9px;border-bottom:1px solid var(--line)}
+.curso{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:10px}
+.curso + .curso{border-top:1px solid var(--line)}
 .curso:hover{background:var(--brand-tint)}
-.curso .n{font-weight:600}
-.curso .tags{display:flex;gap:5px;flex-wrap:wrap}
-.curso .seta{margin-left:auto;color:var(--muted)}
+.curso .info{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.curso .n{font-weight:600;line-height:1.35}
+.curso .n mark{background:none;color:var(--brand);font-weight:800}
+.curso .meta{font-size:.82rem;color:var(--muted)}
+.curso .selo{font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--warn-tint);color:var(--warn);white-space:nowrap}
+.curso .modo{width:8px;height:8px;border-radius:99px;flex:none;background:var(--brand)}
+.curso .modo.semi{background:var(--gold)}
+.curso .seta{color:var(--muted);flex:none}
+.legenda{display:flex;gap:14px;font-size:.78rem;color:var(--muted);align-items:center}
+.legenda i{display:inline-block;width:8px;height:8px;border-radius:99px;background:var(--brand);margin-right:5px}
+.legenda i.semi{background:var(--gold)}
 .vazio{color:var(--muted);padding:12px}
 .barra-lista{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 
@@ -293,6 +302,19 @@ iframe.form{display:block;width:100%;height:80vh;border:0}
 @media(max-width:820px){#lock{grid-template-columns:1fr;grid-template-rows:auto 1fr}.lk-side{padding:28px 24px;gap:28px}.lk-name{font-size:40px;letter-spacing:-1px}.lk-bar{margin-bottom:16px}.lk-tag{font-size:13.5px;margin-top:12px}.lk-foot{display:none}.lk-main{padding:32px 24px;align-items:flex-start}}
 .sair{all:unset;cursor:pointer;font-size:.78rem;opacity:.7;padding:0 8px;margin-top:auto}
 .sair:hover{opacity:1;text-decoration:underline}
+
+.desc-row{cursor:default;padding:10px 4px}
+.desc-row:hover{background:none}
+.desc-grupo{display:flex;flex-direction:column;gap:10px}
+.desc-grupo + .desc-grupo{border-top:1px solid var(--line);padding-top:16px}
+.desc-tit{display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.desc-tit span{font-size:.72rem;background:var(--brand-tint);color:var(--brand);border-radius:99px;padding:1px 8px;letter-spacing:0}
+.desc-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.desc-ul li{padding:10px 4px;font-size:.95rem;font-weight:500}
+.desc-ul li + li{border-top:1px solid var(--line)}
+.desc-grupo{gap:4px}
+.msg-tit{display:flex;gap:10px;align-items:center;font-size:1.15rem;font-weight:800;color:var(--fg)}
+.msg-tit .ico{color:var(--brand);width:22px;height:22px}
 @media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}.topo-cel{display:flex}main{padding-top:18px}}
 @media (max-width:600px){.areas,.opcoes,.res-grid{grid-template-columns:minmax(0,1fr)}.card{padding:14px}}
 </style>
@@ -386,24 +408,34 @@ function copiar(btn, texto){
 function tags(c){
   return `<span class="tags"><span class="tag">${esc(c.grau)}</span><span class="tag ${c.m==="EAD"?"":"semi"}">${esc(c.m)}</span>${c.lanc?'<span class="tag lanc">Lançamento</span>':""}</span>`;
 }
-function linhaCurso(c){ return `<button class="curso" data-curso="${c.id}"><span class="n">${esc(c.n)}</span>${tags(c)}<span class="seta">${svg("seta")}</span></button>`; }
+// destaca o trecho buscado no nome do curso
+function marcar(nome, q){
+  if (!q) return esc(nome);
+  const n = norm(nome); const i = n.search(new RegExp("(^|\\s|\\()"+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));
+  if (i < 0) return esc(nome);
+  const ini = n[i]===" "||n[i]==="(" ? i+1 : i;
+  return esc(nome.slice(0,ini)) + "<mark>" + esc(nome.slice(ini, ini+q.length)) + "</mark>" + esc(nome.slice(ini+q.length));
+}
+function linhaCurso(c, q){ return `<button class="curso" data-curso="${c.id}"><span class="modo ${c.m==="EAD"?"":"semi"}" aria-hidden="true"></span><span class="info"><span class="n">${marcar(c.n, q)}</span><span class="meta">${esc(c.grau)} · ${esc(c.m)}${DUR[c.id]?" · "+esc(DUR[c.id]):""}</span></span>${c.lanc?'<span class="selo">Lançamento</span>':""}<span class="seta">${svg("seta")}</span></button>`; }
+// a busca procura pelo começo das palavras (ex.: "f" acha Farmácia e Fisioterapia, não Design Gráfico)
+const casa = (nome, q) => q.split(" ").filter(Boolean).every(p => norm(nome).split(/[\s()]+/).some(w => w.startsWith(p)));
 
 /* ---------- Fichas ---------- */
 function telaFichas(){
   let corpo;
   if (BUSCA.trim()){
     const q = norm(BUSCA.trim());
-    const r = D.cursos.filter(c => norm(c.n).includes(q)).sort((a,b)=>a.n.localeCompare(b.n));
-    const dsc = DESC_LIST.filter(d => norm(d).includes(q));
-    corpo = `<div class="card"><div class="barra-lista"><b>${r.length} curso${r.length===1?"":"s"} para "${esc(BUSCA.trim())}"</b></div>
-      <div class="lista">${r.map(linhaCurso).join("")}${dsc.map(d=>`<button class="curso" data-descirr><span class="n">${esc(d)}</span><span class="tags"><span class="tag lanc">Descontinuado</span></span><span class="seta">${svg("seta")}</span></button>`).join("")}${(r.length||dsc.length)?"":'<p class="vazio">Nenhum curso com esse nome. Confira a escrita ou procure pela área.</p>'}</div></div>`;
+    const r = D.cursos.filter(c => casa(c.n, q)).sort((a,b)=> (norm(b.n).startsWith(q)-norm(a.n).startsWith(q)) || a.n.localeCompare(b.n));
+    const dsc = DESC_LIST.filter(d => casa(d, q));
+    corpo = `<div class="card"><div class="barra-lista"><b>${r.length} curso${r.length===1?"":"s"} para "${esc(BUSCA.trim())}"</b><span class="legenda"><span><i></i>EAD</span><span><i class="semi"></i>Semipresencial</span></span></div>
+      <div class="lista">${r.map(c=>linhaCurso(c,q)).join("")}${dsc.map(d=>`<button class="curso" data-descirr><span class="modo" style="background:var(--line)" aria-hidden="true"></span><span class="info"><span class="n">${marcar(d,q)}</span><span class="meta">Curso descontinuado</span></span><span class="selo">Descontinuado</span><span class="seta">${svg("seta")}</span></button>`).join("")}${(r.length||dsc.length)?"":'<p class="vazio">Nenhum curso com esse nome. Confira a escrita ou procure pela área.</p>'}</div></div>`;
   } else if (AREA || TODOS){
     const lista = D.cursos.filter(c => TODOS || c.a===AREA);
     let html = "";
-    if (TODOS){ html = lista.sort((a,b)=>a.n.localeCompare(b.n)).map(linhaCurso).join(""); }
+    if (TODOS){ html = lista.sort((a,b)=>a.n.localeCompare(b.n)).map(c=>linhaCurso(c)).join(""); }
     else {
       const grupos = [...new Set(lista.map(c=>c.g))];
-      html = grupos.map(g => `<p class="grupo-tit">${esc(g)}</p>` + lista.filter(c=>c.g===g).sort((a,b)=>a.n.localeCompare(b.n)).map(linhaCurso).join("")).join("");
+      html = grupos.map(g => `<p class="grupo-tit">${esc(g)}</p>` + lista.filter(c=>c.g===g).sort((a,b)=>a.n.localeCompare(b.n)).map(c=>linhaCurso(c)).join("")).join("");
     }
     corpo = `<div class="card"><div class="barra-lista"><button class="link" data-voltar>${svg("voltar")} Voltar para as áreas</button><span class="sub">${lista.length} cursos</span></div>
       <h2>${TODOS?"Todos os cursos":esc(AREA)}</h2><div class="lista">${html}</div></div>`;
@@ -561,7 +593,7 @@ let CMP = ["gestao-de-farmacia","gastronomia"], CMPQ = "";
 const FRASE_CMP = "Antes de entrar nos detalhes de cada curso, vou te mandar um comparativo rápido pra facilitar a sua escolha. Você analisa lado a lado e me conta qual curso mais chamou a sua atenção e com qual você mais se identificou.";
 function telaComp(){
   const q = norm(CMPQ.trim());
-  const sug = q ? D.cursos.filter(c => !CMP.includes(c.id) && norm(c.n).includes(q)).slice(0,6) : [];
+  const sug = q ? D.cursos.filter(c => !CMP.includes(c.id) && casa(c.n, q)).slice(0,6) : [];
   const cards = CMP.map(id => {
     const c = C[id], x = COMP[id];
     const linha = (rot, txt) => `<div class="cmp-row"><span class="cmp-lbl">${rot}</span>${txt ? `<p>${esc(txt)}</p>` : `<p class="cmp-vazio">Em atualização</p>`}</div>`;
@@ -695,13 +727,18 @@ function telaDuvidas(){
     <p class="sub" style="font-size:.85rem">Fontes: apresentação Modelo Acadêmico Operacional 2027 e Decreto nº 12.456/2025.</p>`;
 }
 function telaDesc(){
-  const m = (rot, k) => `<div class="card"><span class="rot">${rot}</span><div class="bubble">${zapT(DESC_MSGS[k])}</div>
-    <div class="linha-acoes"><button class="btn" data-copiar="${esc(fixPolo(DESC_MSGS[k]))}">${svg("copiar")}Copiar mensagem</button></div></div>`;
+  const GR = [["Bacharelado","Bacharelado em "],["Licenciatura","Licenciatura em "],["Tecnólogo","Tecnologia em "]];
+  const itens = DESC_LIST.map(d => { const g = GR.find(([n,pre]) => d.startsWith(pre)); return g ? {n:d.slice(g[1].length), g:g[0]} : {n:d, g:""}; })
+    .sort((a,b)=>a.n.localeCompare(b.n));
+  const grupos = `<div class="lista">${itens.map(x=>`<div class="curso desc-row"><span class="info"><span class="n">${esc(x.n)}</span><span class="meta">${esc(x.g)}</span></span></div>`).join("")}</div>`;
+  const msg = DESC_MSGS.desc1;
   return `<div class="head"><span class="eyebrow">Atenção na venda</span><h1>Cursos descontinuados</h1>
       <p class="sub">${DESC_LIST.length} cursos foram descontinuados. Antes de apresentar um curso, confira se ele não está nesta lista.</p></div>
-    <div class="card"><div class="desc-lista">${DESC_LIST.map(d=>`<span class="desc-item">${svg("desc")}${esc(d)}</span>`).join("")}</div></div>
-    <h2 style="font-size:1.15rem">Como responder ao candidato</h2>
-    ${m("Pediu um curso que não temos","desc1")}${m("Disse que viu o curso no site","desc2")}`;
+    <div class="card">${grupos}</div>
+    <div class="card"><h2 class="msg-tit">${svg("msg")}Se o candidato pedir um curso que não temos</h2>
+      <p class="sub">Acolha o interesse e convide para conhecer outras opções.</p>
+      <div class="bubble">${zapT(msg)}</div>
+      <div class="linha-acoes"><button class="btn" data-copiar="${esc(fixPolo(msg))}">${svg("copiar")}Copiar mensagem</button></div></div>`;
 }
 
 /* ---------- ficha completa (modelo aprovado) ---------- */
@@ -735,9 +772,9 @@ const MODS = [
 ];
 function buscaGeral(q){
   const r = [];
-  D.cursos.forEach(c => { if (norm(c.n).includes(q)) r.push({t:"Curso", tit:c.n, sub:`${c.grau} · ${c.m}`, act:`data-curso="${c.id}"`}); });
+  D.cursos.forEach(c => { if (casa(c.n, q)) r.push({t:"Curso", tit:c.n, sub:`${c.grau} · ${c.m}`, act:`data-curso="${c.id}"`}); });
   FAQ_TEMAS.forEach(t => t.itens.forEach(([id,qq,a]) => { if (norm(qq+" "+a.replace(/<[^>]+>/g," ")).includes(q)) r.push({t:"Dúvida", tit:fixPolo(qq), sub:t.tema, act:`data-faq="${id}"`}); }));
-  DESC_LIST.forEach(d => { if (norm(d).includes(q)) r.push({t:"Descontinuado", tit:d, sub:"Curso descontinuado", act:"data-descirr"}); });
+  DESC_LIST.forEach(d => { if (casa(d, q)) r.push({t:"Descontinuado", tit:d, sub:"Curso descontinuado", act:"data-descirr"}); });
   MODS.forEach(([k,n,d]) => { if (norm(n+" "+d).includes(q)) r.push({t:"Módulo", tit:n, sub:d, act:`data-ir="${k}"`}); });
   return r;
 }
