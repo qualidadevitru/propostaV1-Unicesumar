@@ -1,0 +1,844 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>Playbook UniCesumar V1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --bg:#F3F6FB; --surface:#FFFFFF; --fg:#16223A; --muted:#5D6B82; --line:#DCE4F0;
+  --brand:#0A4DA2; --brand-tint:#E8F0FB; --on-brand:#FFFFFF; --side:#073A7D;
+  --gold:#F0B94D; --gold-strong:#9A6A10; --gold-tint:#FDF3DF;
+  --ok:#1C7C4D; --warn:#8A5200; --warn-tint:#FFF3DC; --bubble:#E7F7DE; --bubble-fg:#14301A;
+  --display:"Sora","Segoe UI",Arial,sans-serif; --body:"Inter","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1626; --surface:#142238; --fg:#E8EEF8; --muted:#A7B4C8; --line:#26385A;
+  --brand:#7FB0F2; --brand-tint:#16294A; --on-brand:#0C1626; --side:#0B2552;
+  --gold-strong:#F2C875; --gold-tint:#3A2C10; --ok:#6FD3A0; --warn:#F2C26B; --warn-tint:#3A2C10;
+  --bubble:#1D3A2A; --bubble-fg:#DDF3E3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1626; --surface:#142238; --fg:#E8EEF8; --muted:#A7B4C8; --line:#26385A;
+  --brand:#7FB0F2; --brand-tint:#16294A; --on-brand:#0C1626; --side:#0B2552;
+  --gold-strong:#F2C875; --gold-tint:#3A2C10; --ok:#6FD3A0; --warn:#F2C26B; --warn-tint:#3A2C10;
+  --bubble:#1D3A2A; --bubble-fg:#DDF3E3; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.25;text-wrap:balance}
+p{margin:0}
+button,input{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100%}
+.side{background:var(--side);color:#fff;position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;gap:16px}
+.brand{padding:0 8px}
+.brand small{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.brand strong{font-family:var(--display);font-size:1.15rem}
+.side nav{display:flex;flex-direction:column;gap:2px}
+.side nav button{all:unset;display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;color:#fff;font-weight:600;font-size:.93rem;opacity:.85;cursor:pointer}
+.side nav button:hover{opacity:1;background:rgba(255,255,255,.07)}
+.side nav button.on{background:rgba(255,255,255,.14);box-shadow:inset 3px 0 0 var(--gold);opacity:1}
+.side nav button.on .ico{color:var(--gold)}
+.side nav button[disabled]{opacity:.45;cursor:default;background:none}
+.side .nota-side{margin-top:auto;font-size:.75rem;opacity:.65;padding:0 8px}
+
+.topo-cel{display:none;background:var(--side);color:#fff;padding:12px 16px;gap:10px;flex-direction:column;position:sticky;top:0;z-index:20}
+.topo-cel .brand{padding:0}
+.topo-cel nav{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 2px}
+.topo-cel nav::-webkit-scrollbar{display:none}
+.topo-cel nav button{flex:none}
+.topo-cel nav button{border:1px solid rgba(255,255,255,.3);background:none;color:#fff;border-radius:99px;padding:5px 12px;font-size:.82rem;font-weight:600;cursor:pointer}
+.topo-cel nav button.on{background:#fff;color:var(--side);border-color:#fff}
+
+main{min-width:0;padding:28px 16px 60px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+.head{display:flex;flex-direction:column;gap:6px}
+.head h1{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:800}
+.sub{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:99px;background:var(--brand-tint);color:var(--brand);white-space:nowrap}
+.tag.semi{background:var(--gold-tint);color:var(--gold-strong)}
+.tag.lanc{background:var(--warn-tint);color:var(--warn)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:9px;padding:9px 16px;font-weight:700;font-size:.9rem;cursor:pointer;background:var(--brand);color:var(--on-brand)}
+.btn.sec{background:var(--brand-tint);color:var(--brand)}
+.btn.ok{background:var(--ok);color:#fff}
+.link{all:unset;cursor:pointer;color:var(--brand);font-weight:700;font-size:.9rem}
+
+/* busca */
+.busca{position:relative}
+.busca .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.busca input{width:100%;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);border-radius:12px;padding:13px 14px 13px 42px;font-size:1rem}
+.busca input:focus{border-color:var(--brand);outline:none}
+.areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.area{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;transition:border-color .15s}
+.area:hover{border-color:var(--brand)}
+.area h3{font-size:1.02rem}
+.area p{font-size:.85rem;color:var(--muted)}
+.area .qtd{font-size:.78rem;font-weight:700;color:var(--brand)}
+.lista{display:flex;flex-direction:column}
+.grupo-tit{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 2px 6px}
+.curso{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 12px;border-radius:9px;border-bottom:1px solid var(--line)}
+.curso:hover{background:var(--brand-tint)}
+.curso .n{font-weight:600}
+.curso .tags{display:flex;gap:5px;flex-wrap:wrap}
+.curso .seta{margin-left:auto;color:var(--muted)}
+.vazio{color:var(--muted);padding:12px}
+.barra-lista{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* teste */
+.passos{display:flex;gap:6px;flex-wrap:wrap}
+.passo{font-size:.75rem;font-weight:700;padding:4px 11px;border-radius:99px;background:var(--brand-tint);color:var(--muted)}
+.passo.on{background:var(--brand);color:var(--on-brand)}
+.passo.feito{color:var(--brand)}
+.bubble{background:var(--bubble);color:var(--bubble-fg);border-radius:4px 14px 14px 14px;padding:14px 16px;white-space:pre-line;max-width:600px;user-select:text}
+.rot{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.perg{font-family:var(--display);font-size:1.08rem;font-weight:700}
+.opcoes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.op{all:unset;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);font-weight:600;font-size:.93rem}
+.op:hover{border-color:var(--brand);background:var(--brand-tint)}
+.op b{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:99px;background:var(--brand-tint);color:var(--brand);font-size:.8rem}
+.respostas{display:flex;flex-direction:column;gap:4px;font-size:.88rem;color:var(--muted)}
+.respostas b{color:var(--fg)}
+.res-grid-x{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.res{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.res .pos{font-size:.75rem;font-weight:700;color:var(--brand)}
+.res h3{font-size:1rem}
+.res .acoes{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+.res .acoes .btn{padding:7px 12px;font-size:.82rem}
+.recado{background:var(--gold-tint);color:var(--fg);border:1px dashed var(--gold);border-radius:10px;padding:10px 14px;font-size:.88rem}
+.recado b{color:var(--gold-strong)}
+.linha-acoes{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--side);color:#fff;padding:10px 16px;border-radius:9px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;z-index:50}
+.toast.on{opacity:1}
+
+
+/* teste no formato do decodificador antigo */
+.frase{background:var(--gold-tint);border:1px solid var(--gold);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.frase .rot{color:var(--gold-strong);display:flex;gap:6px;align-items:center}
+.frase-linha{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.frase-linha p{flex:1 1 320px}
+.trilha{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:440px}
+.trilha span{height:5px;border-radius:99px;background:var(--line)}
+.trilha span.on{background:var(--brand)}
+.qcard{max-width:760px;border-top:4px solid var(--brand)}
+.qgrande{font-size:clamp(1.2rem,2.6vw,1.5rem);font-weight:800;color:var(--fg)}
+.qpasso{display:flex;gap:10px;align-items:center;margin-top:6px;font-size:.92rem}
+.qnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:99px;background:var(--brand);color:var(--on-brand);font-size:.78rem;font-weight:700;flex:none}
+.chip-n{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:7px;background:var(--brand-tint);color:var(--brand);font-weight:800;font-size:.85rem}
+.chip.sel .chip-n{background:var(--brand);color:var(--on-brand)}
+.qtit{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.qajuda{font-size:.85rem;color:var(--muted);margin-top:-6px}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chip{all:unset;cursor:pointer;display:flex;gap:12px;align-items:center;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-weight:600;font-size:.93rem;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--brand)}
+.chip.sel{border-color:var(--brand);background:var(--brand-tint);color:var(--brand)}
+.chip .ico{color:var(--brand)}
+.chips.trava{pointer-events:none}
+.refazer{align-self:center;background:none;border:1.5px solid var(--brand);border-radius:99px}
+.aviso{display:flex;gap:10px;align-items:center;background:var(--gold-tint);border:1px solid var(--gold);border-radius:10px;padding:12px 16px;font-size:.9rem}
+.aviso .ico{color:var(--gold-strong)}
+.dica{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--brand-tint);border-radius:12px;padding:14px 16px;font-size:.92rem}
+.btn.branco{background:var(--surface);color:var(--brand);border:1px solid var(--line);border-radius:99px}
+.res-topo{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:24px;align-items:start}
+.perfil-card{background:linear-gradient(160deg,#073A7D,#0A4DA2 60%,#2C6FC4);color:#fff;border-radius:14px;padding:28px 22px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.perfil-card .selo{width:52px;height:52px;border-radius:99px;border:1.5px solid var(--gold);display:grid;place-items:center;color:var(--gold)}
+.perfil-card .selo .ico{width:24px;height:24px}
+.perfil-card h3{font-size:1.25rem;color:#fff}
+.perfil-card p{font-size:.92rem;opacity:.92;line-height:1.5}
+.perfil-card small{margin-top:8px;font-size:.7rem;opacity:.6}
+.coluna-card{display:flex;flex-direction:column;gap:10px;align-items:center}
+.indicar{display:flex;flex-direction:column;gap:8px}
+.ind{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+.ind.on{border-color:var(--brand);background:var(--brand-tint)}
+.ind{gap:8px}
+.ind-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ind-meta{font-size:.8rem;color:var(--muted)}
+.ind .acoes{align-items:center;gap:14px}
+.incluir{border:1.5px solid var(--brand);background:none;color:var(--brand);border-radius:99px;padding:5px 12px;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap}
+.incluir.on{background:var(--brand);color:var(--on-brand)}
+.ind .link{font-size:.84rem}
+.ind b{font-size:.95rem}
+.ind .acoes{display:flex;gap:6px;flex-wrap:wrap}
+.ind .acoes .btn{padding:6px 11px;font-size:.8rem}
+.msg-edit{width:100%;min-height:175px;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;font:inherit;font-size:.93rem;background:var(--surface);color:var(--fg);resize:vertical}
+@media (max-width:760px){.res-topo{grid-template-columns:minmax(0,1fr)}}
+
+.sug{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(10,30,70,.12);z-index:10;overflow:hidden}
+.sug button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:10px 14px;font-weight:600;font-size:.92rem;flex-wrap:wrap}
+.sug button:hover{background:var(--brand-tint)}
+.sug small{color:var(--muted);font-weight:500}
+.cmp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:2px}
+.cmp-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-head{background:var(--side);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.cmp-head b{display:block;font-family:var(--display);font-size:1rem}
+.cmp-head span{font-size:.8rem;opacity:.8}
+.cmp-x{border:0;background:none;color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;opacity:.75;padding:0 2px}
+.cmp-x:hover{opacity:1}
+.cmp-row{padding:11px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.cmp-row:first-of-type{border-top:0}
+.cmp-lbl{align-self:flex-start;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--brand);background:var(--brand-tint);padding:2px 9px;border-radius:99px}
+.cmp-vazio{color:var(--muted);font-style:italic}
+@media (max-width:600px){.cmp-grid{grid-template-columns:minmax(0,1fr)}}
+
+.shot-wrap{position:absolute;left:-9999px;top:0}
+.shot{width:600px;background:#F3F6FB;padding:18px;display:flex;flex-direction:column;gap:14px;font-family:var(--body);color:#16223A}
+.s-topo{display:flex;flex-direction:column;gap:2px;padding:2px 4px}
+.s-topo small{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0A4DA2}
+.s-topo b{font-family:var(--display);font-size:26px}
+.s-cards{display:flex;flex-direction:column;gap:14px}
+.shot.lado .s-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+.shot.lado .s-head b{font-size:19px}
+.shot.lado .s-row p{font-size:16.5px}
+.shot.lado .s-head{padding:12px 14px}.shot.lado .s-row{padding:10px 14px}
+.s-card{background:#fff;border:1px solid #DCE4F0;border-radius:14px;overflow:hidden}
+.s-head{background:#073A7D;color:#fff;padding:14px 18px}
+.s-head b{display:block;font-family:var(--display);font-size:22px;line-height:1.25}
+.s-head span{font-size:15px;opacity:.85}
+.s-row{padding:12px 18px;border-top:1px solid #DCE4F0;display:flex;flex-direction:column;gap:6px}
+.s-row:first-of-type{border-top:0}
+.s-lbl{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#0A4DA2;background:#E8F0FB;padding:3px 10px;border-radius:99px}
+.s-row p{font-size:18px;line-height:1.45}
+
+.tema{font-family:var(--display);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 2px}
+.faq-lista{display:flex;flex-direction:column;gap:8px}
+details.faq{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details.faq[open]{border-color:var(--brand)}
+details.faq summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:600;display:flex;align-items:center;gap:12px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary .ico{margin-left:auto;color:var(--brand);transform:rotate(90deg);transition:transform .2s}
+details.faq[open] summary .ico{transform:rotate(-90deg)}
+.ans{padding:0 16px 16px;display:flex;flex-direction:column;gap:8px;max-width:72ch;font-size:.94rem}
+.ans p{margin:0}.ans ul,.ans ol{margin:0;padding-left:1.3em}
+.ans .resp{font-weight:700}
+.ans .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.ans table{border-collapse:collapse;width:100%;font-size:.86rem}
+.ans th,.ans td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.ans th{background:var(--brand-tint);color:var(--brand)}
+.desc-lista{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px}
+.desc-item{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.desc-item .ico{color:var(--warn);width:16px;height:16px;margin-top:3px}
+.ficha-wrap{margin:0}
+.ficha-wrap iframe{display:block;width:100%;height:100vh;border:0;background:var(--bg)}
+body.com-ficha main{padding:0}
+body.com-ficha .wrap{max-width:none}
+@media (max-width:860px){.ficha-wrap iframe{height:calc(100vh - 104px)}}
+@media (max-width:600px){.desc-lista{grid-template-columns:minmax(0,1fr)}}
+
+details.faq summary{background:var(--brand-tint);border-radius:9px;color:var(--fg)}
+details.faq[open] summary{background:var(--brand);color:var(--on-brand);border-radius:9px 9px 0 0}
+details.faq[open] summary .ico{color:var(--on-brand)}
+details.faq[open] .ans{padding-top:14px}
+.ans .bubble{max-width:none}
+.ans a{color:var(--brand);font-weight:700}
+.inicio-topo{display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;padding:28px 0 6px}
+.inicio-topo h1{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:800}
+.busca.grande{width:100%;max-width:680px;text-align:left}
+.busca.grande input{border-radius:99px;padding:16px 20px 16px 48px;font-size:1.02rem;box-shadow:0 4px 18px rgba(10,40,90,.08)}
+.busca.grande .ico{left:18px}
+.sug.ini{max-height:420px;overflow-y:auto}
+.sug.ini button{align-items:center;flex-wrap:nowrap}
+.sug-main{display:flex;flex-direction:column;min-width:0;text-align:left}
+.sug-main b{font-size:.94rem}
+.sug .vazio{padding:14px}
+.atalhos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:10px}
+.atalho{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.atalho:hover{border-color:var(--brand)}
+.atalho .ico{color:var(--brand);width:22px;height:22px}
+.atalho span{font-size:.86rem;color:var(--muted)}
+iframe.form{display:block;width:100%;height:80vh;border:0}
+.form-vazio{align-items:center;text-align:center;padding:40px 18px}
+.form-vazio .ico{width:32px;height:32px;color:var(--brand)}
+
+/* ===== Tela de login (Vitru Educação) ===== */
+#lock{position:fixed;inset:0;z-index:9999;display:grid;grid-template-columns:1.1fr 1fr;background:#FBFAFD;overflow:auto;color:#221A2E}
+#lock[hidden]{display:none}
+.lk-side{position:relative;overflow:hidden;background:#2D1246;color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between}
+.lk-side::before{content:"";position:absolute;width:620px;height:620px;right:-260px;bottom:-260px;border-radius:50%;background:radial-gradient(circle,rgba(240,185,77,.22),rgba(240,185,77,0) 65%)}
+.lk-side::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(74,31,114,0) 40%,rgba(74,31,114,.55) 100%);pointer-events:none}
+.lk-mark,.lk-hero,.lk-foot{position:relative;z-index:1}
+.lk-mark{color:#CDB8E3;font-weight:600;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase}
+.lk-bar{display:block;width:44px;height:3px;border-radius:3px;background:#F0B94D;margin-bottom:26px}
+.lk-name{font-family:var(--display);font-weight:700;font-size:68px;line-height:1;letter-spacing:-2px}
+.lk-name em{font-style:normal;color:#F0B94D}
+.lk-tag{margin-top:22px;font-size:16px;line-height:1.5;color:#D9C7EA;max-width:360px}
+.lk-foot{font-size:11.5px;color:#BFA9D6}
+.lk-main{display:flex;align-items:center;justify-content:center;padding:48px 32px}
+.lk-form{width:100%;max-width:340px}
+.lk-eye{font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#6B5F78;margin-bottom:10px}
+.lk-title{font-family:var(--display);font-weight:600;font-size:28px;letter-spacing:-.5px;color:#2D1246;margin:0 0 34px}
+.lk-label{font-size:11px;font-weight:600;color:#6B5F78;margin-bottom:10px}
+.lk-brands{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.lk-brand{border-radius:12px;padding:14px 12px;min-height:76px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:inherit;border:1px solid}
+.lk-brand b{font-family:var(--display);font-weight:600;font-size:15px}
+.lk-brand small{font-size:10.5px}
+.lk-brand[data-m="uni"]{background:#EEF5FA;border-color:#C5DCEC;color:#00629B}
+.lk-brand[data-m="uni"][aria-pressed="true"]{background:#DCEBF5;border-color:#00629B;box-shadow:0 0 0 1px #00629B}
+.lk-brand[data-m="assel"]{background:#FFFBE0;border-color:#F2E28A;color:#3A3000}
+.lk-brand[data-m="assel"] small{color:#7A6A12}
+.lk-brand[data-m="assel"][aria-pressed="true"]{background:#FFF3A8;border-color:#D9B800;box-shadow:0 0 0 1px #D9B800}
+.lk-pass{position:relative;margin-bottom:10px}
+.lk-pass input{width:100%;border:0;border-bottom:1px solid #D9CFE6;padding:10px 36px 10px 0;font-size:15px;background:transparent;outline:none;color:#221A2E}
+.lk-pass input:focus{border-bottom-color:#4A1F72}
+.lk-pass button{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;padding:6px;color:#A99BB8;display:flex}
+.lk-erro{font-size:11.5px;color:#B03A2E;min-height:16px;margin-bottom:14px}
+.lk-entrar{width:100%;background:#2D1246;color:#fff;border:0;padding:14px 20px;border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer}
+.lk-entrar:hover{background:#4A1F72}
+.lk-entrar:disabled{background:#CFC5DA;cursor:default}
+.lk-aviso{background:#FFFBE0;border:1px solid #F2E28A;color:#3A3000;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px}
+.lk-note{margin-top:22px;font-size:11px;color:#A99BB8;text-align:center}
+@media(max-width:820px){#lock{grid-template-columns:1fr;grid-template-rows:auto 1fr}.lk-side{padding:28px 24px;gap:28px}.lk-name{font-size:40px;letter-spacing:-1px}.lk-bar{margin-bottom:16px}.lk-tag{font-size:13.5px;margin-top:12px}.lk-foot{display:none}.lk-main{padding:32px 24px;align-items:flex-start}}
+.sair{all:unset;cursor:pointer;font-size:.78rem;opacity:.7;padding:0 8px;margin-top:auto}
+.sair:hover{opacity:1;text-decoration:underline}
+@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}.topo-cel{display:flex}main{padding-top:18px}}
+@media (max-width:600px){.areas,.opcoes,.res-grid{grid-template-columns:minmax(0,1fr)}.card{padding:14px}}
+</style>
+
+<div id="lock" hidden>
+  <div class="lk-side">
+    <div class="lk-mark">Vitru Educação</div>
+    <div class="lk-hero"><span class="lk-bar"></span><div class="lk-name">Playbook<br><em>Interativo</em></div>
+      <div class="lk-tag">Informações dos cursos e apoio para cada atendimento.</div></div>
+    <div class="lk-foot">Uso interno</div>
+  </div>
+  <div class="lk-main"><form class="lk-form" id="lkForm" autocomplete="off">
+    <div class="lk-eye">Bem-vindo(a)</div>
+    <h1 class="lk-title">Acesse o Playbook</h1>
+    <div class="lk-label">Marca</div>
+    <div class="lk-brands">
+      <button type="button" class="lk-brand" data-m="uni" aria-pressed="true"><b>UniCesumar</b></button>
+      <button type="button" class="lk-brand" data-m="assel" aria-pressed="false"><b>Uniasselvi</b><small>em construção</small></button>
+    </div>
+    <div id="lkSenhaBox"><div class="lk-label">Senha</div>
+      <div class="lk-pass"><input type="password" id="lkSenha" placeholder="Digite sua senha" aria-label="Senha">
+        <button type="button" id="lkOlho" aria-label="Mostrar senha"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+      <div class="lk-erro" id="lkErro" role="alert"></div></div>
+    <div class="lk-aviso" id="lkAssel" hidden>O Playbook Uniasselvi está em construção. Em breve ele estará disponível aqui.</div>
+    <button class="lk-entrar" id="lkEntrar" type="submit">Entrar</button>
+    <div class="lk-note">Acesso restrito</div>
+  </form></div>
+</div>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><small>UniCesumar</small><strong>Playbook Interativo</strong></div>
+    <nav id="navSide"></nav>
+    <button class="sair" id="sair" type="button">Sair</button>
+    
+  </aside>
+  <div>
+    <header class="topo-cel">
+      <div class="brand"><small>UniCesumar</small><strong>Playbook Interativo</strong></div>
+      <nav id="navCel"></nav>
+    </header>
+    <main><div class="wrap" id="tela"></div></main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const DUR = {"administracao": "4 anos", "ciencias-contabeis": "4 anos", "gestao-comercial": "2 anos", "gestao-de-recursos-humanos": "2 anos", "logistica": "2 anos", "marketing": "2 anos", "analise-e-desenvolvimento-de-sistemas": "2,5 anos", "engenharia-de-software": "4 anos", "redes-de-computadores": "2,5 anos", "seguranca-cibernetica": "2,5 anos", "seguranca-do-trabalho": "3 anos", "artes-visuais": "4 anos", "ciencias-biologicas": "4 anos", "danca": "4 anos", "educacao-especial": "4 anos", "educacao-fisica-licenciatura": "4 anos", "geografia": "4 anos", "historia": "4 anos", "letras-libras": "4 anos", "letras-portugues-ingles": "5 anos", "matematica": "4 anos", "musica": "4 anos", "pedagogia": "4 anos", "sociologia": "4 anos", "psicopedagogia": "4 anos", "acompanhamento-do-transtorno-do-espectro-autista": "3 anos", "engenharia-ambiental-e-sanitaria": "5 anos", "engenharia-civil": "5 anos", "engenharia-eletrica": "5 anos", "engenharia-mecanica": "5 anos", "engenharia-mecatronica": "5 anos", "engenharia-de-producao": "5 anos", "agronomia": "5 anos", "automacao-industrial": "3 anos", "manutencao-industrial": "3 anos", "biomedicina": "4 anos", "educacao-fisica-bacharelado": "4 anos", "farmacia": "5 anos", "fisioterapia": "5 anos", "fonoaudiologia": "4 anos", "nutricao": "4 anos", "terapia-ocupacional": "4 anos", "estetica-e-cosmetica": "2,5 anos", "radiologia": "3 anos", "gastronomia": "2 anos", "gestao-de-farmacia": "2 anos"};
+const COMP = {"gastronomia": {"p": "Criativo e prático, gosta de cozinhar e empreender", "m": "De cozinheiro a chef executivo, com ganhos que podem passar de R$15.000, ou o próprio negócio.", "d": ["Confeitaria clássica e brasileira", "Cozinha internacional", "Gestão de alimentos e bebidas"]}, "gestao-de-farmacia": {"p": "Organizado, gosta de gestão, saúde e varejo", "m": "Início entre R$3.200 e R$7.000, com espaço para crescer até a gerência de redes farmacêuticas.", "d": ["Gestão de processos e estrutura da farmácia", "Ética e legislação farmacêutica", "Abordagens inovadoras no mercado farmacêutico"]}};
+const D = {"cursos": [{"id": "administracao", "n": "Administração", "a": "EAD", "g": "Gestão e Negócios", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "ciencias-contabeis", "n": "Ciências Contábeis", "a": "EAD", "g": "Gestão e Negócios", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "ciencias-economicas", "n": "Ciências Econômicas", "a": "EAD", "g": "Gestão e Negócios", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "comercio-exterior", "n": "Comércio Exterior", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-comercial", "n": "Gestão Comercial", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-da-producao-industrial", "n": "Gestão da Produção Industrial", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-da-qualidade", "n": "Gestão da Qualidade", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "gestao-da-saude-mental-no-trabalho", "n": "Gestão da Saúde Mental no Trabalho", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": true, "e": "Fora do teste"}, {"id": "gestao-de-cooperativas", "n": "Gestão de Cooperativas", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-de-farmacia", "n": "Gestão de Farmácia", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-de-negocios-imobiliarios", "n": "Gestão de Negócios Imobiliários", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-de-recursos-humanos", "n": "Gestão de Recursos Humanos", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "gestao-do-agronegocio", "n": "Gestão do Agronegócio", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "gestao-financeira", "n": "Gestão Financeira", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "gestao-publica", "n": "Gestão Pública", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "investimentos-e-mercado-financeiro", "n": "Investimentos e Mercado Financeiro", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "logistica", "n": "Logística", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "marketing", "n": "Marketing", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "midias-sociais-digitais", "n": "Mídias Sociais Digitais", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "negocios-e-customer-experience", "n": "Negócios e Customer Experience", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "processos-gerenciais", "n": "Processos Gerenciais", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "psicologia-aplicada-as-organizacoes-e-inovacao-humana", "n": "Psicologia Aplicada às Organizações e Inovação Humana", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "secretariado", "n": "Secretariado", "a": "EAD", "g": "Gestão e Negócios", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "biblioteconomia", "n": "Biblioteconomia", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "ciencia-da-felicidade", "n": "Ciência da Felicidade", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "cinema-e-audiovisual", "n": "Cinema e Audiovisual", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-de-animacao", "n": "Design de Animação", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-de-interiores", "n": "Design de Interiores", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-de-moda", "n": "Design de Moda", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-de-produto", "n": "Design de Produto", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-grafico", "n": "Design Gráfico", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "design-musical", "n": "Design Musical", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "teologia", "n": "Teologia", "a": "EAD", "g": "Artes, Design e Humanidades", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "gastronomia", "n": "Gastronomia", "a": "EAD", "g": "Alimentos, Turismo e Lazer", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "gestao-de-turismo", "n": "Gestão de Turismo", "a": "EAD", "g": "Alimentos, Turismo e Lazer", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "ciencia-da-criatividade", "n": "Ciência da Criatividade", "a": "EAD", "g": "Comunicação", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "fotografia", "n": "Fotografia", "a": "EAD", "g": "Comunicação", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "jornalismo", "n": "Jornalismo", "a": "EAD", "g": "Comunicação", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "publicidade-e-propaganda", "n": "Publicidade e Propaganda", "a": "EAD", "g": "Comunicação", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "relacoes-publicas", "n": "Relações Públicas", "a": "EAD", "g": "Comunicação", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "analise-e-desenvolvimento-de-sistemas", "n": "Análise e Desenvolvimento de Sistemas", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "banco-de-dados", "n": "Banco de Dados", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "ciencia-da-computacao", "n": "Ciência da Computação", "a": "EAD", "g": "Tecnologia", "grau": "Bacharelado", "m": "EAD", "lanc": true, "e": "Fora do teste"}, {"id": "engenharia-de-software", "n": "Engenharia de Software", "a": "EAD", "g": "Tecnologia", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "gestao-da-tecnologia-da-informacao", "n": "Gestão da Tecnologia da Informação", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "inteligencia-artificial", "n": "Inteligência Artificial", "a": "EAD", "g": "Tecnologia", "grau": "Bacharelado", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "inteligencia-artificial-e-machine-learning", "n": "Inteligência Artificial e Machine Learning", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "jogos-digitais", "n": "Jogos Digitais", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "redes-de-computadores", "n": "Redes de Computadores", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "seguranca-cibernetica", "n": "Segurança Cibernética", "a": "EAD", "g": "Tecnologia", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "criminologia", "n": "Criminologia", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "gestao-de-servicos-judiciais-e-notariais", "n": "Gestão de Serviços Judiciais e Notariais", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "investigacao-e-pericia-judicial", "n": "Investigação e Perícia Judicial", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "seguranca-do-trabalho", "n": "Segurança do Trabalho", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "seguranca-privada", "n": "Segurança Privada", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "seguranca-publica", "n": "Segurança Pública", "a": "EAD", "g": "Jurídico e Segurança", "grau": "Tecnólogo", "m": "EAD", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "artes-visuais", "n": "Artes Visuais", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "ciencias-biologicas", "n": "Ciências Biológicas", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "danca", "n": "Dança", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "educacao-especial", "n": "Educação Especial", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "educacao-fisica-licenciatura", "n": "Educação Física (Licenciatura)", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "geografia", "n": "Geografia", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "historia", "n": "História", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "letras-libras", "n": "Letras – Libras", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "letras-portugues-ingles", "n": "Letras Português – Inglês", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "matematica", "n": "Matemática", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "musica", "n": "Música", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "pedagogia", "n": "Pedagogia", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "sociologia", "n": "Sociologia", "a": "Licenciaturas e Educação", "g": "Licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "filosofia-segunda-licenciatura", "n": "Filosofia (segunda licenciatura)", "a": "Licenciaturas e Educação", "g": "Segundas licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Fora do teste"}, {"id": "geografia-segunda-licenciatura", "n": "Geografia (segunda licenciatura)", "a": "Licenciaturas e Educação", "g": "Segundas licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Fora do teste"}, {"id": "historia-segunda-licenciatura", "n": "História (segunda licenciatura)", "a": "Licenciaturas e Educação", "g": "Segundas licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Fora do teste"}, {"id": "matematica-segunda-licenciatura", "n": "Matemática (segunda licenciatura)", "a": "Licenciaturas e Educação", "g": "Segundas licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Fora do teste"}, {"id": "sociologia-segunda-licenciatura", "n": "Sociologia (segunda licenciatura)", "a": "Licenciaturas e Educação", "g": "Segundas licenciaturas", "grau": "Licenciatura", "m": "Semipresencial", "lanc": false, "e": "Fora do teste"}, {"id": "psicopedagogia", "n": "Psicopedagogia", "a": "Licenciaturas e Educação", "g": "Educação", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "acompanhamento-do-transtorno-do-espectro-autista", "n": "Acompanhamento do Transtorno do Espectro Autista", "a": "Licenciaturas e Educação", "g": "Educação", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "engenharia-ambiental-e-sanitaria", "n": "Engenharia Ambiental e Sanitária", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "engenharia-civil", "n": "Engenharia Civil", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "engenharia-eletrica", "n": "Engenharia Elétrica", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "engenharia-mecanica", "n": "Engenharia Mecânica", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "engenharia-mecatronica", "n": "Engenharia Mecatrônica", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "engenharia-de-producao", "n": "Engenharia de Produção", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "agronomia", "n": "Agronomia", "a": "Engenharias", "g": "Engenharias e Agronomia", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "automacao-industrial", "n": "Automação Industrial", "a": "Engenharias", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Criar, inovar e ver ideias saindo do papel"}, {"id": "manutencao-industrial", "n": "Manutenção Industrial", "a": "Engenharias", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "biomedicina", "n": "Biomedicina", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "educacao-fisica-bacharelado", "n": "Educação Física (Bacharelado)", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "farmacia", "n": "Farmácia", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "fisioterapia", "n": "Fisioterapia", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "fonoaudiologia", "n": "Fonoaudiologia", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "nutricao", "n": "Nutrição", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "servico-social", "n": "Serviço Social", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "terapia-ocupacional", "n": "Terapia Ocupacional", "a": "Saúde", "g": "Bacharelados", "grau": "Bacharelado", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "bem-estar-animal", "n": "Bem-estar Animal", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "estetica-e-cosmetica", "n": "Estética e Cosmética", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "gerontologia", "n": "Gerontologia", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "gestao-hospitalar", "n": "Gestão Hospitalar", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Liderar, organizar e tomar decisões"}, {"id": "podologia", "n": "Podologia", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}, {"id": "radiologia", "n": "Radiologia", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Analisar, investigar e resolver com precisão"}, {"id": "saude-e-estetica-capilar", "n": "Saúde e Estética Capilar", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": true, "e": "Fora do teste"}, {"id": "terapias-integrativas-e-complementares", "n": "Terapias Integrativas e Complementares", "a": "Saúde", "g": "Tecnólogos da área", "grau": "Tecnólogo", "m": "Semipresencial", "lanc": false, "e": "Estar em contato com pessoas e ajudar diretamente"}], "grupos": {"A1": ["fisioterapia", "terapia-ocupacional", "fonoaudiologia", "educacao-fisica-bacharelado", "gerontologia"], "A2": ["biomedicina", "farmacia", "radiologia", "gestao-de-farmacia"], "A3": ["estetica-e-cosmetica", "nutricao", "podologia", "terapias-integrativas-e-complementares"], "A4": ["gestao-hospitalar", "servico-social", "gerontologia", "gestao-de-farmacia"], "A5": ["bem-estar-animal", "ciencias-biologicas", "agronomia", "gestao-do-agronegocio"], "B1": ["pedagogia", "psicopedagogia", "educacao-especial", "acompanhamento-do-transtorno-do-espectro-autista"], "B2": ["educacao-especial", "acompanhamento-do-transtorno-do-espectro-autista", "letras-libras", "psicopedagogia"], "B3": ["letras-portugues-ingles", "letras-libras", "historia", "geografia", "sociologia"], "B4": ["matematica", "ciencias-biologicas", "geografia", "pedagogia"], "B5": ["artes-visuais", "musica", "danca", "educacao-fisica-licenciatura"], "C1": ["administracao", "processos-gerenciais", "gestao-de-cooperativas", "gestao-publica", "secretariado"], "C2": ["ciencias-contabeis", "ciencias-economicas", "gestao-financeira", "investimentos-e-mercado-financeiro"], "C3": ["marketing", "gestao-comercial", "negocios-e-customer-experience", "midias-sociais-digitais", "gestao-de-negocios-imobiliarios"], "C4": ["gestao-de-recursos-humanos", "psicologia-aplicada-as-organizacoes-e-inovacao-humana", "ciencia-da-felicidade", "secretariado"], "C5": ["logistica", "gestao-da-qualidade", "gestao-da-producao-industrial", "comercio-exterior", "gestao-do-agronegocio"], "C6": ["gastronomia", "gestao-de-turismo", "gestao-de-negocios-imobiliarios", "negocios-e-customer-experience"], "D1": ["analise-e-desenvolvimento-de-sistemas", "engenharia-de-software", "banco-de-dados", "jogos-digitais"], "D2": ["inteligencia-artificial", "inteligencia-artificial-e-machine-learning", "banco-de-dados", "gestao-da-tecnologia-da-informacao"], "D3": ["redes-de-computadores", "seguranca-cibernetica", "gestao-da-tecnologia-da-informacao", "analise-e-desenvolvimento-de-sistemas"], "D4": ["jogos-digitais", "design-de-animacao", "design-grafico", "cinema-e-audiovisual"], "E1": ["engenharia-civil", "engenharia-ambiental-e-sanitaria", "design-de-interiores", "seguranca-do-trabalho"], "E2": ["engenharia-eletrica", "engenharia-mecanica", "engenharia-mecatronica", "automacao-industrial", "manutencao-industrial"], "E3": ["engenharia-de-producao", "gestao-da-producao-industrial", "gestao-da-qualidade", "logistica", "manutencao-industrial"], "E4": ["agronomia", "gestao-do-agronegocio", "engenharia-ambiental-e-sanitaria", "bem-estar-animal"], "F1": ["jornalismo", "relacoes-publicas", "publicidade-e-propaganda", "midias-sociais-digitais"], "F2": ["cinema-e-audiovisual", "fotografia", "design-de-animacao", "ciencia-da-criatividade"], "F3": ["design-grafico", "design-de-moda", "design-de-produto", "design-de-interiores"], "F4": ["design-musical", "musica", "artes-visuais", "danca"], "G1": ["seguranca-publica", "seguranca-privada", "seguranca-do-trabalho", "criminologia"], "G2": ["investigacao-e-pericia-judicial", "criminologia", "gestao-de-servicos-judiciais-e-notariais", "gestao-publica"], "G3": ["servico-social", "teologia", "sociologia", "ciencia-da-felicidade"], "G4": ["biblioteconomia", "historia", "letras-portugues-ingles", "jornalismo"]}, "perguntas": [{"id": "P1", "quando": "Sempre (início do teste)", "tela": "Qual dessas áreas mais chama a atenção do candidato?", "copia": "Para eu te ajudar a encontrar o curso que mais combina com você, me conta: qual dessas áreas mais chama a sua atenção?\n\n1. Saúde e bem-estar\n2. Educação e ensino\n3. Gestão, negócios e finanças\n4. Tecnologia e computação\n5. Engenharia, indústria e agro\n6. Comunicação, arte e design\n7. Direito, segurança e sociedade\n8. Ainda não sei", "op": [["1", "Saúde e bem-estar", "P2 - Saúde e bem-estar"], ["2", "Educação e ensino", "P2 - Educação e ensino"], ["3", "Gestão, negócios e finanças", "P2 - Gestão, negócios e finanças"], ["4", "Tecnologia e computação", "P2 - Tecnologia e computação"], ["5", "Engenharia, indústria e agro", "P2 - Engenharia, indústria e agro"], ["6", "Comunicação, arte e design", "P2 - Comunicação, arte e design"], ["7", "Direito, segurança e sociedade", "P2 - Direito, segurança e sociedade"], ["8", "Ainda não sei", "Pergunta de vocação"]]}, {"id": "P1b", "quando": "Resposta \"Ainda não sei\" na P1", "tela": "O que o candidato mais gostaria de fazer no dia a dia?", "copia": "Sem problema, vamos descobrir juntos! O que você mais gostaria de fazer no seu dia a dia?\n\n1. Cuidar das pessoas e ajudar na saúde delas\n2. Ensinar e acompanhar o desenvolvimento de alguém\n3. Organizar, planejar e liderar\n4. Resolver problemas com lógica e tecnologia\n5. Construir, consertar e ver as coisas funcionando\n6. Criar e se expressar\n7. Proteger, investigar e fazer justiça", "op": [["1", "Cuidar das pessoas e ajudar na saúde delas", "P2 - Saúde e bem-estar"], ["2", "Ensinar e acompanhar o desenvolvimento de alguém", "P2 - Educação e ensino"], ["3", "Organizar, planejar e liderar", "P2 - Gestão, negócios e finanças"], ["4", "Resolver problemas com lógica e tecnologia", "P2 - Tecnologia e computação"], ["5", "Construir, consertar e ver as coisas funcionando", "P2 - Engenharia, indústria e agro"], ["6", "Criar e se expressar", "P2 - Comunicação, arte e design"], ["7", "Proteger, investigar e fazer justiça", "P2 - Direito, segurança e sociedade"]]}, {"id": "P2", "quando": "Resposta \"Saúde e bem-estar\" na P1", "tela": "Em qual forma de cuidado ele mais se imagina atuando?", "copia": "Em qual forma de cuidado você mais se imagina atuando?\n\n1. Reabilitação, movimento e qualidade de vida\n2. Exames, diagnósticos e medicamentos\n3. Beleza, alimentação e terapias de bem-estar\n4. Gestão da saúde e cuidado social\n5. Cuidado com animais e com a natureza", "op": [["A1", "Reabilitação, movimento e qualidade de vida", "Grupo A1"], ["A2", "Exames, diagnósticos e medicamentos", "Grupo A2"], ["A3", "Beleza, alimentação e terapias de bem-estar", "Grupo A3"], ["A4", "Gestão da saúde e cuidado social", "Grupo A4"], ["A5", "Cuidado com animais e com a natureza", "Grupo A5"]]}, {"id": "P2", "quando": "Resposta \"Educação e ensino\" na P1", "tela": "Com quem ou com o que ele mais gostaria de trabalhar?", "copia": "Com quem ou com o que você mais gostaria de trabalhar?\n\n1. Crianças e alfabetização\n2. Inclusão e necessidades específicas\n3. Línguas e ciências humanas\n4. Ciências e números\n5. Artes, música e movimento", "op": [["B1", "Crianças e alfabetização", "Grupo B1"], ["B2", "Inclusão e necessidades específicas", "Grupo B2"], ["B3", "Línguas e ciências humanas", "Grupo B3"], ["B4", "Ciências e números", "Grupo B4"], ["B5", "Artes, música e movimento", "Grupo B5"]]}, {"id": "P2", "quando": "Resposta \"Gestão, negócios e finanças\" na P1", "tela": "Em qual frente de negócios ele mais se imagina?", "copia": "Em qual frente de negócios você mais se imagina?\n\n1. Liderar e fazer empresas crescerem\n2. Finanças, investimentos e números\n3. Vendas, marketing e clientes\n4. Pessoas, equipes e bem-estar no trabalho\n5. Operações, qualidade e comércio\n6. Turismo, gastronomia e serviços", "op": [["C1", "Liderar e fazer empresas crescerem", "Grupo C1"], ["C2", "Finanças, investimentos e números", "Grupo C2"], ["C3", "Vendas, marketing e clientes", "Grupo C3"], ["C4", "Pessoas, equipes e bem-estar no trabalho", "Grupo C4"], ["C5", "Operações, qualidade e comércio", "Grupo C5"], ["C6", "Turismo, gastronomia e serviços", "Grupo C6"]]}, {"id": "P2", "quando": "Resposta \"Tecnologia e computação\" na P1", "tela": "Qual área de tecnologia mais desperta o interesse dele?", "copia": "Qual área de tecnologia mais desperta o seu interesse?\n\n1. Criar sistemas e aplicativos\n2. Dados e inteligência artificial\n3. Redes, segurança digital e infraestrutura\n4. Jogos, animação e tecnologia criativa", "op": [["D1", "Criar sistemas e aplicativos", "Grupo D1"], ["D2", "Dados e inteligência artificial", "Grupo D2"], ["D3", "Redes, segurança digital e infraestrutura", "Grupo D3"], ["D4", "Jogos, animação e tecnologia criativa", "Grupo D4"]]}, {"id": "P2", "quando": "Resposta \"Engenharia, indústria e agro\" na P1", "tela": "Que tipo de solução ele gostaria de construir?", "copia": "Que tipo de solução você gostaria de construir?\n\n1. Obras, construções e meio ambiente\n2. Máquinas, energia e automação\n3. Processos e gestão da indústria\n4. Campo e agronegócio", "op": [["E1", "Obras, construções e meio ambiente", "Grupo E1"], ["E2", "Máquinas, energia e automação", "Grupo E2"], ["E3", "Processos e gestão da indústria", "Grupo E3"], ["E4", "Campo e agronegócio", "Grupo E4"]]}, {"id": "P2", "quando": "Resposta \"Comunicação, arte e design\" na P1", "tela": "Que tipo de criação mais combina com ele?", "copia": "Que tipo de criação mais combina com você?\n\n1. Comunicação, notícias e relacionamento\n2. Imagem, vídeo e audiovisual\n3. Design e moda\n4. Música e artes", "op": [["F1", "Comunicação, notícias e relacionamento", "Grupo F1"], ["F2", "Imagem, vídeo e audiovisual", "Grupo F2"], ["F3", "Design e moda", "Grupo F3"], ["F4", "Música e artes", "Grupo F4"]]}, {"id": "P2", "quando": "Resposta \"Direito, segurança e sociedade\" na P1", "tela": "Em qual frente ele mais se imagina atuando?", "copia": "Em qual frente você mais se imagina atuando?\n\n1. Segurança e proteção\n2. Investigação e justiça\n3. Comunidade, fé e cuidado social\n4. Informação, cultura e conhecimento", "op": [["G1", "Segurança e proteção", "Grupo G1"], ["G2", "Investigação e justiça", "Grupo G2"], ["G3", "Comunidade, fé e cuidado social", "Grupo G3"], ["G4", "Informação, cultura e conhecimento", "Grupo G4"]]}, {"id": "P3", "quando": "Sempre (depois da P2)", "tela": "O que mais traria realização no trabalho?", "copia": "E para fechar: o que mais traria realização para você no trabalho?\n\n1. Estar em contato com pessoas e ajudar diretamente\n2. Analisar, investigar e resolver com precisão\n3. Criar, inovar e ver ideias saindo do papel\n4. Liderar, organizar e tomar decisões", "op": [["pessoas", "Estar em contato com pessoas e ajudar diretamente", "Ordena o resultado"], ["analise", "Analisar, investigar e resolver com precisão", "Ordena o resultado"], ["criacao", "Criar, inovar e ver ideias saindo do papel", "Ordena o resultado"], ["lideranca", "Liderar, organizar e tomar decisões", "Ordena o resultado"]]}, {"id": "Mensagens de apoio", "quando": null, "tela": null, "copia": null, "op": []}, {"id": "Abertura", "quando": null, "tela": null, "copia": "Vou te fazer 3 perguntas rápidas, é só escolher as opções que mais combinam com você. Assim a gente descobre junto quais cursos têm mais a ver com você. Podemos começar?", "op": []}, {"id": "Resultado", "quando": null, "tela": null, "copia": "Pelas suas respostas, separei alguns cursos que combinam com você:\n\n• [Curso 1] ([modalidade])\n• [Curso 2] ([modalidade])\n• [Curso 3] ([modalidade])\n• [Curso 4] ([modalidade])\n\nQual deles chamou mais a sua atenção? Posso te contar mais sobre ele.", "op": []}]};
+const ICO = {
+  fichas:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+  teste:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  comp:'<rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/>',
+  duv:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>',
+  desc:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+  busca:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  seta:'<path d="M9 6l6 6-6 6"/>', copiar:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  voltar:'<path d="M15 6l-6 6 6 6"/>',
+  inicio:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  aprov:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 14l2 2 4-4"/>',
+  feed:'<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/><path d="M8 11h8M8 14h5"/>'
+};
+const svg = k => `<svg class="ico" viewBox="0 0 24 24">${ICO[k]}</svg>`;
+const MENU = [["inicio","Início"],["fichas","Fichas de curso"],["teste","Teste de Perfil"],["comp","Comparativo de cursos"],["duv","Dúvidas do novo modelo acadêmico"],["desc","Cursos descontinuados"],["aprov","Aproveitamento de estudos"],["feed","Feedback"]];
+const AREAS = [
+  ["EAD","Gestão, tecnologia, comunicação, design e mais"],
+  ["Licenciaturas e Educação","Licenciaturas, segundas licenciaturas e Educação"],
+  ["Saúde","Bacharelados e tecnólogos da área"],
+  ["Engenharias","Engenharias, Agronomia e tecnólogos"]
+];
+const C = Object.fromEntries(D.cursos.map(c => [c.id, c]));
+const esc = s => String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+let TELA = "inicio", AREA = null, TODOS = false, BUSCA = "";
+const T = {};  // respostas do teste
+
+function nav(){
+  const html = (cel) => MENU.map(([k,n]) => {
+    const ativo = true;
+    return cel ? (ativo ? `<button data-ir="${k}" class="${TELA===k?"on":""}">${n}</button>` : "")
+               : `<button data-ir="${k}" class="${TELA===k?"on":""}" ${ativo?"":"disabled title='Fora desta prévia'"}>${svg(k)}${n}</button>`;
+  }).join("");
+  navSide.innerHTML = html(false); navCel.innerHTML = html(true);
+}
+function toast(t){ const e=document.getElementById("toast"); e.textContent=t; e.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(()=>e.classList.remove("on"),1600); }
+function copiar(btn, texto){
+  if (texto) navigator.clipboard?.writeText(texto).catch(()=>{});
+  const orig = btn.innerHTML; btn.classList.add("ok"); btn.innerHTML = svg("copiar")+"Copiado!";
+  setTimeout(()=>{ btn.classList.remove("ok"); btn.innerHTML = orig; },1500);
+}
+function tags(c){
+  return `<span class="tags"><span class="tag">${esc(c.grau)}</span><span class="tag ${c.m==="EAD"?"":"semi"}">${esc(c.m)}</span>${c.lanc?'<span class="tag lanc">Lançamento</span>':""}</span>`;
+}
+function linhaCurso(c){ return `<button class="curso" data-curso="${c.id}"><span class="n">${esc(c.n)}</span>${tags(c)}<span class="seta">${svg("seta")}</span></button>`; }
+
+/* ---------- Fichas ---------- */
+function telaFichas(){
+  let corpo;
+  if (BUSCA.trim()){
+    const q = norm(BUSCA.trim());
+    const r = D.cursos.filter(c => norm(c.n).includes(q)).sort((a,b)=>a.n.localeCompare(b.n));
+    const dsc = DESC_LIST.filter(d => norm(d).includes(q));
+    corpo = `<div class="card"><div class="barra-lista"><b>${r.length} curso${r.length===1?"":"s"} para "${esc(BUSCA.trim())}"</b></div>
+      <div class="lista">${r.map(linhaCurso).join("")}${dsc.map(d=>`<button class="curso" data-descirr><span class="n">${esc(d)}</span><span class="tags"><span class="tag lanc">Descontinuado</span></span><span class="seta">${svg("seta")}</span></button>`).join("")}${(r.length||dsc.length)?"":'<p class="vazio">Nenhum curso com esse nome. Confira a escrita ou procure pela área.</p>'}</div></div>`;
+  } else if (AREA || TODOS){
+    const lista = D.cursos.filter(c => TODOS || c.a===AREA);
+    let html = "";
+    if (TODOS){ html = lista.sort((a,b)=>a.n.localeCompare(b.n)).map(linhaCurso).join(""); }
+    else {
+      const grupos = [...new Set(lista.map(c=>c.g))];
+      html = grupos.map(g => `<p class="grupo-tit">${esc(g)}</p>` + lista.filter(c=>c.g===g).sort((a,b)=>a.n.localeCompare(b.n)).map(linhaCurso).join("")).join("");
+    }
+    corpo = `<div class="card"><div class="barra-lista"><button class="link" data-voltar>${svg("voltar")} Voltar para as áreas</button><span class="sub">${lista.length} cursos</span></div>
+      <h2>${TODOS?"Todos os cursos":esc(AREA)}</h2><div class="lista">${html}</div></div>`;
+  } else {
+    corpo = `<div class="areas">${AREAS.map(([a,d]) => `<button class="area" data-area="${esc(a)}"><h3>${esc(a)}</h3><p>${d}</p><span class="qtd">${D.cursos.filter(c=>c.a===a).length} cursos</span></button>`).join("")}</div>
+      <div><button class="btn sec" data-todos>Ver todos os cursos</button></div>`;
+  }
+  return `<div class="head"><span class="eyebrow">Graduação 2027</span><h1>Fichas de curso</h1>
+      <p class="sub">Procure pelo nome do curso ou escolha uma área.</p></div>
+    <div class="busca">${svg("busca")}<input id="busca" type="search" placeholder="Digite o curso, ex.: farmacia, pedagogia, engenharia civil" value="${esc(BUSCA)}" autocomplete="off"></div>
+    ${corpo}`;
+}
+
+/* ---------- Teste de Perfil ---------- */
+ICO.heart='<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>';
+ICO.book='<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/>';
+ICO.chart='<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>';
+ICO.laptop='<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/>';
+ICO.wrench='<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>';
+ICO.brush='<path d="M9.1 11.2l3.7 3.7"/><path d="M14 4l6 6-8.5 8.5a3 3 0 0 1-4.2 0l-1.8-1.8a3 3 0 0 1 0-4.2z"/>';
+ICO.shield='<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
+ICO.help='<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>';
+ICO.users='<circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.8.8 3 2.6 3.5 5.2"/>';
+ICO.search='<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>';
+ICO.bulb='<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/>';
+ICO.trophy='<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>';
+ICO.msg='<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/>';
+ICO.img='<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>';
+ICO.alerta='<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>';
+ICO.baixar='<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>';
+ICO.refazer='<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>';
+
+const P1 = D.perguntas.find(q=>q.id==="P1"), P1b = D.perguntas.find(q=>q.id==="P1b"), P3 = D.perguntas.find(q=>q.id==="P3");
+const ABER = D.perguntas.find(q=>q.id==="Abertura").copia;
+const P2de = area => D.perguntas.find(q => q.id==="P2" && q.quando.includes('"'+area+'"'));
+const ESTILO = {pessoas:"Estar em contato com pessoas e ajudar diretamente",analise:"Analisar, investigar e resolver com precisão",criacao:"Criar, inovar e ver ideias saindo do papel",lideranca:"Liderar, organizar e tomar decisões"};
+const ICO_AREA = {"Saúde e bem-estar":"heart","Educação e ensino":"book","Gestão, negócios e finanças":"chart","Tecnologia e computação":"laptop","Engenharia, indústria e agro":"wrench","Comunicação, arte e design":"brush","Direito, segurança e sociedade":"shield"};
+const ICO_EST = {pessoas:"users",analise:"search",criacao:"bulb",lideranca:"trophy"};
+const PERFIL = {
+  "Saúde e bem-estar":["Perfil Acolhedor","Você sente satisfação real em ver o outro se recuperar e viver melhor. Combina com carreiras onde cuidar e apoiar alguém é o centro do trabalho, não um extra."],
+  "Educação e ensino":["Perfil Educador","Você gosta de ver alguém aprender e evoluir com a sua ajuda. Combina com carreiras onde ensinar, incluir e acompanhar o desenvolvimento das pessoas é o centro do trabalho."],
+  "Gestão, negócios e finanças":["Perfil Estrategista","Você enxerga o quadro geral antes dos outros. Números, planejamento e organização não te cansam, te dão clareza, e você gosta de estar por trás das decisões que dão certo."],
+  "Tecnologia e computação":["Perfil Investigador","Você não desiste até entender como algo funciona por dentro. Lógica, tecnologia e resolver problemas complexos são o seu tipo favorito de desafio."],
+  "Engenharia, indústria e agro":["Perfil Realizador","Você aprende fazendo, não só lendo. Gosta de ver o problema virar solução com as próprias mãos, e sente orgulho de um resultado que dá pra tocar."],
+  "Comunicação, arte e design":["Perfil Criativo","Você pensa em imagens, histórias e experiências antes de pensar em planilhas. Combina com carreiras onde criar, comunicar ou produzir algo marcante é o centro do trabalho."],
+  "Direito, segurança e sociedade":["Perfil Protetor","Você se importa com segurança, ordem e justiça. Combina com carreiras onde prevenir, investigar ou proteger é o centro do trabalho, seja cuidando de pessoas, patrimônio ou da sociedade."]
+};
+let SEL = [], OPC = [], MSG = null;
+
+function etapa(){
+  if (!T.area) return T.naoSei ? "p1b" : "p1";
+  if (!T.grupo) return "p2";
+  if (!T.estilo) return "p3";
+  return "resultado";
+}
+function resultado(){
+  const ids = D.grupos[T.grupo].filter(id => C[id] && !C[id].lanc);
+  const est = ESTILO[T.estilo];
+  const ord = ids.filter(id=>C[id].e===est).concat(ids.filter(id=>C[id].e!==est));
+  let r = ord.slice(0,4);
+  const mods = new Set(ids.map(id=>C[id].m));
+  if (mods.size>1 && new Set(r.map(id=>C[id].m)).size===1){
+    const outra = ord.find(id => C[id].m!==C[r[0]].m);
+    if (outra) r[3] = outra;
+  }
+  return r.map(id=>C[id]);
+}
+function icoOpcao(quem, o){
+  if (quem==="p1"||quem==="p1b"){ const a = quem==="p1" ? o[1] : o[2].replace("P2 - ",""); return o[2]==="Pergunta de vocação" ? "help" : (ICO_AREA[a]||"help"); }
+  if (quem==="p3") return ICO_EST[o[0]]||"star";
+  return ICO_AREA[T.area]||"help";
+}
+const NUM = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"];
+// texto para o WhatsApp: pergunta em negrito e opções com 1️⃣ 2️⃣ 3️⃣ (a planilha guarda o texto simples)
+function textoZap(q){
+  const partes = String(q.copia).split(/\n\s*\n/);
+  const intro = partes[0].trim();
+  const i = intro.lastIndexOf("! ");
+  const pergunta = i>=0 ? `${intro.slice(0,i+1)}\n\n*${intro.slice(i+2)}*` : `*${intro}*`;
+  return `${pergunta}\n\n${q.op.map((o,k)=>`${NUM[k]} ${o[1]}`).join("\n")}`;
+}
+const zapHtml = t => esc(t).replace(/\*([^*\n]+)\*/g,"<b>$1</b>");
+function blocoPergunta(q, quem, ajuda, n){
+  const zap = textoZap(q);
+  return `<div class="card qcard">
+    <span class="eyebrow">Pergunta ${n} de 3</span>
+    <h2 class="qgrande">${esc(q.tela)}</h2>
+    ${ajuda?`<p class="qajuda">${ajuda}</p>`:""}
+    <div><button class="btn" data-copiar="${esc(zap)}">${svg("copiar")}Copiar pergunta e opções</button></div>
+    <div class="chips" id="chips">${q.op.map((o,k)=>`<button class="chip" data-${quem}="${esc(o[0])}"><span class="chip-n">${k+1}</span>${svg(icoOpcao(quem,o))}<span>${esc(o[1])}</span></button>`).join("")}</div></div>`;
+}
+function montarMsg(){
+  const n = SEL.length;
+  if (!n) return "Pelas suas respostas, vou te ajudar a encontrar o curso que mais combina com você.";
+  const lista = SEL.map(id=>`• ${C[id].n} (${C[id].m})`).join("\n");
+  return n>1
+    ? `Pelas suas respostas, separei alguns cursos que combinam com você:\n\n${lista}\n\nQual deles chamou mais a sua atenção? Posso te contar mais sobre ele.`
+    : `Pelas suas respostas, separei um curso que combina bastante com você:\n\n${lista}\n\nFaz sentido pra você? Posso te contar mais sobre ele.`;
+}
+function telaTeste(){
+  const e = etapa();
+  const feitos = {p1:0,p1b:0,p2:1,p3:2,resultado:4}[e];
+  let h = `<div class="head"><h1>Teste de Perfil</h1>
+    <p class="sub">Perguntas rápidas que se adaptam às respostas para chegar às indicações mais certeiras.</p></div>
+    <div class="frase"><span class="rot">${svg("msg")}Sugestão de fraseologia</span>
+      <div class="frase-linha"><p>${esc(ABER)}</p><button class="btn sec" data-copiar="${esc(ABER)}">${svg("copiar")}Copiar</button></div></div>
+    <div class="trilha">${[0,1,2,3].map(i=>`<span class="${i<feitos||(e==="resultado")?"on":""}"></span>`).join("")}</div>`;
+
+  if (e==="p1") h += blocoPergunta(P1, "p1", "A próxima pergunta será direcionada pela área escolhida.", 1);
+  if (e==="p1b") h += blocoPergunta(P1b, "p1b", "O candidato ainda não sabe a área. Essa pergunta ajuda a descobrir.", 1);
+  if (e==="p2") h += blocoPergunta(P2de(T.area), "p2", "Pergunta específica da área "+T.area+".", 2);
+  if (e==="p3") h += blocoPergunta(P3, "p3", "Essa resposta define a ordem dos cursos indicados.", 3);
+  if (e==="resultado"){
+    if (!OPC.length){ OPC = resultado().map(c=>c.id); SEL = OPC.slice(0,2); MSG = null; }
+    const [pn, pt] = PERFIL[T.area] || ["Seu perfil",""];
+    const msg = MSG ?? montarMsg();
+    h += `<div class="res-topo">
+        <div class="coluna-card">
+          <div class="perfil-card" id="cartaoPerfil"><div class="selo">${svg(ICO_AREA[T.area]||"star")}</div><h3>${esc(pn)}</h3><p>${esc(pt)}</p><small>Feito especialmente pra você · UniCesumar</small></div>
+          <button class="btn sec" data-img>${svg("img")}Copiar imagem do perfil</button>
+        </div>
+        <div class="indicar"><span class="rot">Opções pra indicar (escolha as que fizerem sentido)</span>
+          ${OPC.map(id=>{ const c=C[id], on=SEL.includes(id); return `<div class="ind ${on?"on":""}"><div class="ind-info"><b>${esc(c.n)}</b><span class="ind-meta">${esc(c.grau)} · ${esc(c.m)}</span></div>
+            <div class="acoes"><button class="link" data-curso="${id}">Ver ficha</button><button class="incluir ${on?"on":""}" data-incluir="${id}">${on?"✓ Na mensagem":"+ Incluir"}</button></div></div>`; }).join("")}
+        </div></div>
+      <div class="card"><b>Mensagem de indicação (personalize se preferir)</b>
+        <textarea class="msg-edit" id="msgEdit">${esc(msg)}</textarea>
+        <div class="linha-acoes"><button class="btn" data-copiarmsg>${svg("copiar")}Copiar mensagem</button></div></div>
+      <p class="aviso">${svg("alerta")}<span>Confira no site oficial se esses cursos são ofertados no Polo do candidato antes de confirmar a indicação.</span></p>
+      ${SEL.length>=2?`<div class="dica"><p><b>Dica:</b> compare os cursos marcados lado a lado.</p><button class="btn branco" data-comparar>Ir para o Comparativo ${svg("seta")}</button></div>`:""}`;
+  }
+  h += `<button class="btn sec refazer" data-reiniciar>${svg("refazer")}Refazer perguntas</button>`;
+  return h;
+}
+function escolher(b, fn){
+  const box = document.getElementById("chips"); if (box.classList.contains("trava")) return;
+  box.classList.add("trava"); b.classList.add("sel");
+  setTimeout(()=>{ fn(); render(); }, 380);
+}
+async function copiarImagem(btn){
+  const el = document.getElementById("cartaoPerfil");
+  if (!window.html2canvas){ toast("A imagem não carregou. Tente de novo ou tire um print."); return; }
+  try{
+    const canvas = await html2canvas(el, {backgroundColor:null, scale:2});
+    canvas.toBlob(blob => {
+      if (navigator.clipboard && window.ClipboardItem){
+        navigator.clipboard.write([new ClipboardItem({"image/png": blob})]).then(()=>copiar(btn,"")).catch(()=>toast("Não deu para copiar. Tente de novo ou tire um print."));
+      } else toast("Seu navegador não copia imagem direto. Tire um print do cartão.");
+    });
+  }catch(e){ toast("Não deu para gerar a imagem. Tire um print do cartão."); }
+}
+
+/* ---------- Comparativo ---------- */
+let CMP = ["gestao-de-farmacia","gastronomia"], CMPQ = "";
+const FRASE_CMP = "Antes de entrar nos detalhes de cada curso, vou te mandar um comparativo rápido pra facilitar a sua escolha. Você analisa lado a lado e me conta qual curso mais chamou a sua atenção e com qual você mais se identificou.";
+function telaComp(){
+  const q = norm(CMPQ.trim());
+  const sug = q ? D.cursos.filter(c => !CMP.includes(c.id) && norm(c.n).includes(q)).slice(0,6) : [];
+  const cards = CMP.map(id => {
+    const c = C[id], x = COMP[id];
+    const linha = (rot, txt) => `<div class="cmp-row"><span class="cmp-lbl">${rot}</span>${txt ? `<p>${esc(txt)}</p>` : `<p class="cmp-vazio">Em atualização</p>`}</div>`;
+    return `<div class="cmp-card"><div class="cmp-head"><div><b>${esc(c.n)}</b><span>${esc(c.grau)} · ${esc(c.m)}${DUR[id]?" · "+esc(DUR[id]):""}</span></div>
+        <button class="cmp-x" data-tirar="${id}" aria-label="Tirar ${esc(c.n)} do comparativo">×</button></div>
+      ${linha("Perfil", x?.p)}${linha("Disciplinas em destaque", x ? x.d.filter(Boolean).join(" · ") : "")}${linha("Mercado de trabalho", x?.m)}</div>`;
+  }).join("");
+  return `<div class="head"><h1>Comparativo de cursos</h1>
+      <p class="sub">Ideal para o candidato indeciso ou que quer conhecer vários cursos ao mesmo tempo.</p></div>
+    <div class="frase"><span class="rot">${svg("msg")}Sugestão de fraseologia</span>
+      <div class="frase-linha"><p>${esc(FRASE_CMP)}</p><button class="btn sec" data-copiar="${esc(FRASE_CMP)}">${svg("copiar")}Copiar</button></div></div>
+    <div class="card"><div class="barra-lista"><b>Cursos no comparativo (${CMP.length} de 4)</b>${CMP.length?`<button class="link" data-limpar>Limpar</button>`:""}</div>
+      ${CMP.length<4?`<div class="busca">${svg("busca")}<input id="cmpBusca" type="search" placeholder="Adicionar curso, ex.: logistica, pedagogia" value="${esc(CMPQ)}" autocomplete="off">
+        ${sug.length?`<div class="sug">${sug.map(c=>`<button data-add="${c.id}"><span>${esc(c.n)}</span><small>${esc(c.grau)} · ${esc(c.m)}</small></button>`).join("")}</div>`:""}</div>`
+        :`<p class="sub">Limite de 4 cursos. Tire um para adicionar outro.</p>`}</div>
+    ${CMP.length ? `<div class="linha-acoes" style="justify-content:flex-end"><button class="btn sec" data-imgcmp>${svg("img")}Copiar imagem</button></div>
+      <div class="cmp-grid" id="cmpGrid">${cards}</div>
+      <p class="sub" style="font-size:.85rem">Nesta prévia, só Gestão de Farmácia e Gastronomia têm os textos da Bússola. Os outros cursos aparecem como "Em atualização" até a coleta.</p>`
+      : `<p class="vazio">Adicione pelo menos 2 cursos para comparar.</p>`}`;
+}
+// imagem pensada para o celular: uma coluna, letra grande, sem botões
+function montarShot(){
+  const old = document.getElementById("shotWrap"); if (old) old.remove();
+  const w = document.createElement("div"); w.id = "shotWrap"; w.className = "shot-wrap";
+  const linha = (rot, txt) => `<div class="s-row"><span class="s-lbl">${rot}</span><p>${txt ? esc(txt) : "Em atualização"}</p></div>`;
+  // 2 cursos: lado a lado | 3 cursos: um embaixo do outro | 4 cursos: 2 x 2, com 2 disciplinas em destaque
+  const n = CMP.length, lado = n===2 || n===4, nDest = n===4 ? 2 : 3;
+  w.innerHTML = `<div class="shot ${lado?"lado":""}" id="shot"><div class="s-topo"><small>UniCesumar</small><b>Comparativo de cursos</b></div>
+    <div class="s-cards">${CMP.map(id => { const c=C[id], x=COMP[id]; return `<div class="s-card"><div class="s-head"><b>${esc(c.n)}</b><span>${esc(c.grau)} · ${esc(c.m)}${DUR[id]?" · "+esc(DUR[id]):""}</span></div>
+      ${linha("Perfil", x?.p)}${linha("Disciplinas em destaque", x ? x.d.filter(Boolean).slice(0,nDest).join(" · ") : "")}${linha("Mercado de trabalho", x?.m)}</div>`; }).join("")}</div></div>`;
+  document.body.appendChild(w);
+  return document.getElementById("shot");
+}
+async function gerarShot(){
+  if (!window.html2canvas) throw new Error("sem html2canvas");
+  const el = montarShot();
+  const canvas = await html2canvas(el, {backgroundColor:"#F3F6FB", scale:2});
+  document.getElementById("shotWrap").remove();
+  return canvas;
+}
+async function copiarShot(btn){
+  try{
+    const canvas = await gerarShot();
+    canvas.toBlob(blob => {
+      if (navigator.clipboard && window.ClipboardItem){
+        navigator.clipboard.write([new ClipboardItem({"image/png": blob})]).then(()=>copiar(btn,"")).catch(()=>toast("Não deu para copiar. Use o botão Baixar imagem."));
+      } else toast("Este aparelho não copia imagem. Use o botão Baixar imagem.");
+    });
+  }catch(e){ toast("Não deu para gerar a imagem. Tente de novo."); }
+}
+async function baixarShot(){
+  try{
+    const canvas = await gerarShot();
+    const a = document.createElement("a"); a.download = "comparativo-cursos.png"; a.href = canvas.toDataURL("image/png"); a.click();
+  }catch(e){ toast("Não deu para gerar a imagem. Tente de novo."); }
+}
+async function copiarImgEl(btn, id){
+  const el = document.getElementById(id);
+  if (!window.html2canvas){ toast("A imagem não carregou. Tente de novo ou tire um print."); return; }
+  try{
+    const canvas = await html2canvas(el, {backgroundColor: getComputedStyle(document.body).backgroundColor, scale:2});
+    canvas.toBlob(blob => {
+      if (navigator.clipboard && window.ClipboardItem){
+        navigator.clipboard.write([new ClipboardItem({"image/png": blob})]).then(()=>copiar(btn,"")).catch(()=>toast("Não deu para copiar. Tente de novo ou tire um print."));
+      } else toast("Seu navegador não copia imagem direto. Tire um print.");
+    });
+  }catch(e){ toast("Não deu para gerar a imagem. Tire um print."); }
+}
+
+
+/* ---------- Dúvidas e descontinuados (do material emergencial) ---------- */
+const FAQ_TEMAS = [
+ {tema:"O que mudou em 2027", itens:[
+  ["marco","O que é o novo marco regulatório?",`<p class="resp">São novas regras do MEC para todos os cursos de graduação a distância do Brasil, que exigem mais presencialidade na formação.</p><p>Foram publicadas em maio de 2025. Com elas:</p><ul><li>Nenhuma graduação pode ser 100% a distância: todo curso tem uma parte presencial</li><li>Toda disciplina tem prova presencial no Polo</li><li>Os cursos passam a ser EAD, semipresenciais ou presenciais, de acordo com a presencialidade de cada um</li><li><b>No EAD:</b> 20% do curso é presencial, com as atividades de extensão e as provas presenciais</li><li><b>No semipresencial:</b> além das provas, tem encontros no Polo e encontros online ao vivo, com registro de presença</li></ul><p>A UniCesumar já está dentro das novas regras.</p>`],
+  ["veterano","Já sou aluno. A mudança vale para mim?",`<p class="resp">Uma parte vale para todos os alunos e outra só para quem entra a partir de 2027/51.</p><p><b>Vale para todos, calouros e veteranos, a partir de 2027:</b></p><ul><li>Disciplinas de 10 semanas</li><li>Prova presencial com 1 questão discursiva e 8 objetivas</li><li>Nova composição da nota e média 7,0</li></ul><p><b>Vale só para calouros do processo 2027/51:</b></p><ul><li>Encontros online (<a class="termo" href="#faq-asm">ASM</a>) e no polo, de 3h</li></ul>`],
+  ["semipresencial","Qual a diferença entre EAD e semipresencial?",`<p class="resp">Nas duas modalidades, o aluno tem provas presenciais no Polo e atividades de extensão. A diferença é que o semipresencial também tem encontros online e no Polo, com registro de presença.</p><ul><li><b>EAD:</b> estudo no seu horário, aulas ao vivo que ficam gravadas, atividades de extensão e provas presenciais no Polo. Não reprova por falta.</li><li><b>Semipresencial:</b> na maioria dos cursos, o 1º ano tem aulas ao vivo online. Ao longo do curso, entram os encontros online (<a class="termo" href="#faq-asm">ASM</a>) e no Polo, que contam presença. Em Automação Industrial e Manutenção Industrial, os encontros já começam no 1º ano.</li></ul><p>Áreas semipresenciais: Licenciaturas e Educação, Engenharias e Saúde.</p>`]
+ ]},
+ {tema:"Aulas e encontros", itens:[
+  ["aulas","Como são as aulas ao vivo?",`<p class="resp">São aulas online e em tempo real, pelo Teams, com 1h30 de duração.</p><p>O professor apresenta o conteúdo e conduz a discussão. As aulas ficam gravadas e não contam presença.</p><p><b>Quantas aulas por semana:</b></p><ul><li><b>EAD:</b> 1 aula por semana, alternando as disciplinas</li><li><b>Semipresencial, 1º ano:</b> 2 aulas por semana, uma de cada disciplina</li><li><b>Semipresencial, 2º ano em diante:</b> as aulas ao vivo dão lugar aos encontros online (ASM) e no polo</li></ul><p><b>Cursos sem aula ao vivo:</b></p><ul><li>EAD: Ciência da Criatividade e Gestão de Cooperativas</li><li>Semipresencial: Automação Industrial e Manutenção Industrial</li></ul><p class="dica">A distribuição das aulas pode variar conforme o curso.</p>`],
+  ["asm","O que é a ASM (Atividade Síncrona Mediada)?",`<p class="resp">É um encontro online e ao vivo, de 3h, com a turma.</p><ul><li>Um professor ou mediador conduz o encontro e incentiva a troca de conhecimento</li><li>Turmas de até 70 alunos, com atendimento mais próximo</li><li>Não fica gravado</li><li>A presença conta: mínimo de 75%</li><li>Existe só nos cursos semipresenciais</li></ul>`],
+  ["diferenca","Qual a diferença entre aula ao vivo e ASM?",`<p class="resp">Na aula ao vivo, o professor ensina o conteúdo. Na ASM, a turma participa e troca conhecimento.</p><div class="table-wrap"><table class="mini"><thead><tr><th></th><th>Aula ao vivo</th><th>ASM</th></tr></thead><tbody><tr><th>Duração</th><td>1h30</td><td>3h</td></tr><tr><th>Fica gravada?</th><td>Sim</td><td>Não</td></tr><tr><th>Conta presença?</th><td>Não</td><td>Sim, mínimo de 75%</td></tr><tr><th>Precisa agendar?</th><td>Não</td><td>Sim</td></tr></tbody></table></div>`],
+  ["asm-acesso","Como o aluno entra na ASM?",`<p class="resp">Pelo ícone do Teams, dentro do Studeo.</p><p>Ao entrar, a presença é registrada automaticamente pelo sistema.</p>`],
+  ["presencialidade","O que é a presencialidade no polo?",`<p class="resp">São encontros no polo, de 3h cada, que contam presença.</p><p>Neles, o aluno pode ter avaliações e simulados, atendimentos, aulas em sala e práticas em laboratório.</p><p><b>Como é em cada área:</b></p><ul><li><b>Licenciaturas e Educação:</b> aulas teóricas, no <a class="termo" href="#faq-movaplay">Mova Play</a></li><li><b>Engenharias:</b> aulas teóricas e práticas, em sala e laboratório</li><li><b>Saúde:</b> depende do curso. Biomedicina e Farmácia, em laboratório. Educação Física, em sala, com quadra em algumas disciplinas.</li></ul>`],
+  ["movaplay","O que é o Mova Play?",`<p class="resp">É a sala de presencialidade das Licenciaturas e Educação, com alunos de cursos diferentes.</p><p>Por exemplo: um aluno de Letras e outro de Pedagogia podem estar na mesma sala. É uma boa oportunidade de trocar experiências.</p>`],
+  ["computador","E se o aluno não tiver computador ou internet boa?",`<p class="resp">Ele pode procurar o seu polo de apoio.</p><p>O polo pode verificar se o aluno consegue usar os computadores de lá para participar das aulas e encontros online.</p>`],
+  ["conceituais","As aulas conceituais continuam?",`<p class="resp">Sim.</p><p>Em algumas situações, elas ficam dentro dos livros digitais.</p>`]
+ ]},
+ {tema:"Agendamento e presença", itens:[
+  ["agendamento","Como o aluno agenda os encontros?",`<p class="resp">Pelo Studeo, a plataforma de estudos.</p><ul><li>Os encontros online (ASM) e no polo precisam ser agendados</li><li>Há um período no calendário para agendar</li><li>Se precisar, o aluno pode alterar o agendamento dentro desse período</li><li>As aulas ao vivo não precisam de agendamento</li></ul>`],
+  ["frequencia","O aluno pode reprovar por falta?",`<ul><li><b>EAD:</b> não. A aprovação depende da nota, que vem das atividades e da prova presencial.</li><li><b>Semipresencial:</b> sim. Ele precisa participar dos encontros online (mínimo de 75%) e no polo.</li></ul>`]
+ ]},
+ {tema:"Provas e notas", itens:[
+  ["disciplinas","Como funcionam as disciplinas?",`<p class="resp">A cada 10 semanas, o aluno cursa 2 disciplinas ao mesmo tempo.</p><ul><li><b>Semanas 1 a 8:</b> aulas e atividades</li><li><b>Semanas 9 e 10:</b> provas no polo</li></ul>`],
+  ["prova","Como é a prova presencial?",`<p class="resp">É feita no polo, vale 6 pontos e dura 50 minutos.</p><ul><li>1 questão discursiva, valendo 2 pontos</li><li>8 questões objetivas, valendo 4 pontos</li></ul>`],
+  ["agenda-prova","Como o aluno agenda as provas?",`<p class="resp">Há um período na semana 9 para agendar uma prova e outro na semana 10 para a outra.</p>`],
+  ["media","Como é calculada a nota?",`<p class="resp">A nota vai até 10, e a média para aprovação é 7,0.</p><ul><li>A.E. 01: 1 ponto</li><li>A.E. 02: 1 ponto</li><li>M.A.P.A.: 2 pontos</li><li>Prova presencial: 6 pontos</li></ul><p class="dica">Disciplinas práticas, estágios e TCC podem ter uma composição diferente.</p>`],
+  ["atividades","O que são A.E. e M.A.P.A.?",`<ul><li><b>A.E. 01 e A.E. 02:</b> atividades objetivas, de 1 ponto cada</li><li><b>M.A.P.A.:</b> atividade prática e discursiva, de 2 pontos</li></ul>`],
+  ["substitutiva","E se o aluno não alcançar a média?",`<p class="resp">Ele pode fazer a prova substitutiva para recuperar a nota.</p>`]
+ ]},
+ {tema:"Livros e extensão", itens:[
+  ["livros","Como funcionam os livros didáticos?",`<p class="resp">O PDF dos livros continua gratuito. O livro impresso é opcional e comprado pelo Studeo.</p><p><b>Para comprar o impresso:</b></p><ol><li>Acessa o Studeo</li><li>Seleciona o catálogo</li><li>Informa o endereço de entrega</li><li>Vê o valor e a taxa de entrega</li><li>Faz o pagamento</li><li>Recebe os livros em casa</li></ol><p class="dica">Os valores ficam disponíveis para cada aluno consultar no Studeo.</p>`],
+  ["extensao","O que é extensão?",`<p class="resp">São projetos em que o aluno aplica o que aprende em desafios reais da comunidade.</p><p>Fazem parte da carga horária exigida por lei e contam como atividade presencial.</p><p><b>Quanto do curso é extensão:</b></p><ul><li>EAD: 15%</li><li>Licenciaturas: 10%</li><li>Engenharias e Saúde: 15%</li></ul><p class="dica">No EAD, a parte presencial é de 20% do curso: 15% de extensão e 5% de provas.</p>`]
+ ]},
+ {tema:"Cursos", itens:[
+  ["estagios","Como funcionam os estágios?",`<p class="resp">Ainda não recebemos o detalhamento dos estágios.</p><p>Assim que tivermos as informações, como carga horária e onde acontecem, elas serão repassadas à operação. Quando chegar a etapa de estágio, o aluno vai receber todo o suporte e as orientações para realizá-la.</p><p>Os alunos também contam com a <a href="https://carreiras.unicesumar.edu.br/" target="_blank" rel="noopener">UniCesumar Carreiras</a>, plataforma exclusiva com vagas de estágio e conteúdos de carreira, além do suporte do Polo e da Central de Alunos.</p><p class="rot" style="margin-top:6px">Sugestão de frase para o candidato</p><div class="bubble">Não precisa se preocupar com o estágio! Ele é uma etapa muito especial da sua formação, porque é quando você coloca em prática tudo o que aprendeu. E você não vai passar por ela sozinho: quando chegar esse momento, vai contar com o suporte do seu Polo e da Central de Alunos sempre que precisar. Além disso, a UniCesumar tem uma plataforma exclusiva para os alunos, a UniCesumar Carreiras, com vagas de estágio e conteúdos pra te apoiar nessa etapa: carreiras.unicesumar.edu.br</div><div><button class="btn" data-copiar="Não precisa se preocupar com o estágio! Ele é uma etapa muito especial da sua formação, porque é quando você coloca em prática tudo o que aprendeu. E você não vai passar por ela sozinho: quando chegar esse momento, vai contar com o suporte do seu Polo e da Central de Alunos sempre que precisar. Além disso, a UniCesumar tem uma plataforma exclusiva para os alunos, a UniCesumar Carreiras, com vagas de estágio e conteúdos pra te apoiar nessa etapa: carreiras.unicesumar.edu.br">Copiar mensagem</button></div>`],
+["lancamento","O que falar sobre os cursos em lançamento?",`<p class="resp">Ainda não temos informações da metodologia, porque eles não foram lançados oficialmente.</p><p>São eles: Ciência da Computação, Gestão da Saúde Mental no Trabalho e Saúde e Estética Capilar.</p>`]
+ ]}
+];
+
+const DESC_MSGS = {
+desc1:`Entendo seu interesse por esse curso! Embora ele não esteja disponível no momento, podemos buscar juntos uma opção que tenha tudo a ver com o que você deseja para sua formação.
+
+Me conta mais sobre o que você procura? Vou te ajudar a encontrar uma alternativa que combine com seus objetivos!`,
+desc2:`Entendo, e agradeço por me avisar! Esse curso realmente não está disponível mais, nosso site está passando por uma atualização, por isso esse curso ainda pode aparecer por lá. Peço desculpas pela confusão.
+
+Mas temos outras opções que podem combinar muito com o que você busca para sua formação. Se quiser, já te apresento algumas alternativas. Qual área mais te interessa?`};
+const DESC_LIST = ["Bacharelado em Arquitetura e Urbanismo", "Licenciatura em Filosofia", "Licenciatura em Física", "Licenciatura em Química", "Licenciatura em Teatro", "Tecnologia em Agrotecnologia", "Tecnologia em Alimentos", "Tecnologia em Automação Residencial e Predial", "Tecnologia em Ciências de Dados e Análise de Comportamento", "Tecnologia em Empreendedorismo", "Tecnologia em Energias Renováveis", "Tecnologia em Gestão Ambiental", "Tecnologia em Gestão da Saúde Pública", "Tecnologia em Gestão de E-commerce", "Tecnologia em Investigação Forense e Perícia Criminal", "Tecnologia em Sistemas para Internet", "Tecnologia em Tecnologia de Alimentos"];
+const fixPolo = s => String(s).replace(/\bpolo(s)?\b/g,"Polo$1");
+const zapT = s => esc(fixPolo(s)).replace(/\*([^*\n]+)\*/g,"<b>$1</b>");
+let FAQQ = "", FAQ_ABRIR = null;
+function telaDuvidas(){
+  const q = norm(FAQQ.trim());
+  const blocos = FAQ_TEMAS.map(t => {
+    const itens = t.itens.filter(([id,qq,a]) => q.length<2 || norm(qq+" "+a.replace(/<[^>]+>/g," ")).includes(q));
+    return itens.length ? `<p class="tema">${esc(t.tema)}</p>${itens.map(([id,qq,a])=>`<details class="faq" name="faq" id="faq-${id}" ${FAQ_ABRIR===id?"open":""}><summary>${esc(fixPolo(qq))}${svg("seta")}</summary><div class="ans">${fixPolo(a)}</div></details>`).join("")}` : "";
+  }).join("");
+  return `<div class="head"><span class="eyebrow">Novo modelo acadêmico 2027</span><h1>Dúvidas do novo modelo acadêmico</h1>
+      <p class="sub">Respostas curtas para tirar dúvidas na hora do atendimento.</p></div>
+    <div class="busca">${svg("busca")}<input id="buscaFaq" type="search" placeholder="Buscar uma dúvida, ex.: prova, ASM, estágio" value="${esc(FAQQ)}" autocomplete="off"></div>
+    <div class="faq-lista">${blocos || '<p class="vazio">Nenhuma dúvida encontrada. Tente outra palavra.</p>'}</div>
+    <p class="sub" style="font-size:.85rem">Fontes: apresentação Modelo Acadêmico Operacional 2027 e Decreto nº 12.456/2025.</p>`;
+}
+function telaDesc(){
+  const m = (rot, k) => `<div class="card"><span class="rot">${rot}</span><div class="bubble">${zapT(DESC_MSGS[k])}</div>
+    <div class="linha-acoes"><button class="btn" data-copiar="${esc(fixPolo(DESC_MSGS[k]))}">${svg("copiar")}Copiar mensagem</button></div></div>`;
+  return `<div class="head"><span class="eyebrow">Atenção na venda</span><h1>Cursos descontinuados</h1>
+      <p class="sub">${DESC_LIST.length} cursos foram descontinuados. Antes de apresentar um curso, confira se ele não está nesta lista.</p></div>
+    <div class="card"><div class="desc-lista">${DESC_LIST.map(d=>`<span class="desc-item">${svg("desc")}${esc(d)}</span>`).join("")}</div></div>
+    <h2 style="font-size:1.15rem">Como responder ao candidato</h2>
+    ${m("Pediu um curso que não temos","desc1")}${m("Disse que viu o curso no site","desc2")}`;
+}
+
+/* ---------- ficha completa (modelo aprovado) ---------- */
+const FICHA_HTML = "<title>Ficha de Curso 2027<\/title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap\">\n<style>\n/* Layout: menu lateral roxo (igual ao material emergencial) + ficha com abas em ordem de conversa */\n:root{\n  --bg:#F5F3FA; --surface:#FFFFFF; --fg:#221A2E; --muted:#6B5F78; --line:#E4DCEF;\n  --brand:#0A4DA2; --brand-tint:#E8F0FB; --on-brand:#FFFFFF; --side:#073A7D;\n  --gold:#F0B94D; --gold-strong:#B97F14; --gold-tint:#FDF3DF;\n  --ok:#1C7C4D; --warn:#9A5B00; --warn-tint:#FFF3DC; --bubble:#E7F7DE; --bubble-fg:#14301A;\n  --display:\"Sora\",\"Segoe UI\",Arial,sans-serif; --body:\"Inter\",\"Segoe UI\",Arial,sans-serif;\n}\n@media (prefers-color-scheme: dark){:root:not([data-theme=\"light\"]){\n  --bg:#140A20; --surface:#1E1230; --fg:#EFE8F7; --muted:#B4A7C6; --line:#35244B;\n  --brand:#7FB0F2; --brand-tint:#16294A; --on-brand:#1A0E28; --side:#0B2552;\n  --gold-strong:#F2C875; --gold-tint:#3A2C10; --ok:#6FD3A0; --warn:#F2C26B; --warn-tint:#3A2C10;\n  --bubble:#1D3A2A; --bubble-fg:#DDF3E3; color-scheme:dark}}\n:root[data-theme=\"dark\"]{\n  --bg:#140A20; --surface:#1E1230; --fg:#EFE8F7; --muted:#B4A7C6; --line:#35244B;\n  --brand:#7FB0F2; --brand-tint:#16294A; --on-brand:#1A0E28; --side:#0B2552;\n  --gold-strong:#F2C875; --gold-tint:#3A2C10; --ok:#6FD3A0; --warn:#F2C26B; --warn-tint:#3A2C10;\n  --bubble:#1D3A2A; --bubble-fg:#DDF3E3; color-scheme:dark}\n*{box-sizing:border-box}\nhtml,body{height:100%}\nbody{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}\nbody::before{content:\"\";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--side)}\nh1,h2,h3{font-family:var(--display);margin:0;line-height:1.25;text-wrap:balance}\np{margin:0}\nbutton{font:inherit}\n:focus-visible{outline:3px solid var(--gold);outline-offset:2px}\n.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}\n\n.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100%}\n.side{background:var(--side);color:#fff;position:sticky;top:0;height:100vh;padding-block:22px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:14px;display:flex;flex-direction:column;gap:16px}\n.brand small{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}\n.brand strong{font-family:var(--display);font-size:1.15rem}\n.brand{padding:0 8px}\n.side nav a{display:flex;gap:10px;align-items:center;padding:10px 10px;border-radius:8px;color:#fff;text-decoration:none;font-weight:600;font-size:.93rem;opacity:.9}\n.side nav a.on{background:rgba(255,255,255,.14);box-shadow:inset 3px 0 0 var(--gold);opacity:1}\n.side nav a.on .ico{color:var(--gold)}\n.side .nota-side{margin-top:auto;font-size:.75rem;opacity:.65;padding:0 8px}\n\nmain{min-width:0;padding-block:28px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}\n.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:18px}\n.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}\n.troca{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px}\n.troca button{border:0;background:none;padding:7px 12px;border-radius:7px;cursor:pointer;color:var(--fg);font-weight:600;font-size:.88rem}\n.troca button[aria-pressed=\"true\"]{background:var(--brand);color:var(--on-brand)}\n.nome{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px 4px 4px 12px}\n.nome label{font-size:.82rem;color:var(--muted);font-weight:600;white-space:nowrap}\n.nome input{border:0;background:var(--brand-tint);color:var(--fg);border-radius:7px;padding:7px 10px;font:inherit;font-size:.9rem;width:150px}\n\n.head{display:flex;flex-direction:column;gap:8px}\n.voltar{font-size:.88rem;font-weight:700;color:var(--brand);text-decoration:none}\n.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}\n.head h1{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:800}\n.tags{display:flex;flex-wrap:wrap;gap:6px}\n.tag{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--brand-tint);color:var(--brand)}\n.tag.ok{background:#E3F4EA;color:var(--ok)}\n\n/* abas */\n.abas{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;border-bottom:2px solid var(--line);padding-bottom:0}\n.aba{border:0;background:none;cursor:pointer;padding:10px 4px 12px;text-align:center;align-items:center;border-bottom:3px solid transparent;margin-bottom:-2px;display:flex;flex-direction:column;gap:2px;color:var(--muted)}\n.aba small{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-strong)}\n.aba b{font-size:.9rem;color:inherit}\n.aba[aria-selected=\"true\"]{border-bottom-color:var(--brand);color:var(--fg)}\n.aba[aria-selected=\"true\"] b{color:var(--brand)}\n@media (max-width:640px){.abas{display:flex;flex-wrap:wrap;gap:6px;border-bottom:0;overflow:visible}\n.aba{flex:0 0 auto;border:1.5px solid var(--line);border-radius:99px;padding:7px 13px;margin:0;background:var(--surface)}\n.aba small{display:none}\n.aba b{font-size:.85rem}\n.aba[aria-selected=\"true\"]{background:var(--brand);border-color:var(--brand)}\n.aba[aria-selected=\"true\"] b{color:var(--on-brand)}}\n\n.painel{display:flex;flex-direction:column;gap:14px}\n.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}\n.card h2{font-size:1.02rem}\n.card .sub{font-size:.85rem;color:var(--muted)}\n.passo{display:flex;align-items:center;gap:8px}\n.passo i{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}\n.mic{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--surface);color:var(--brand);border-radius:99px;padding:5px 11px;font-size:.78rem;font-weight:700;cursor:pointer}\n.mic:hover,.mic[aria-expanded=\"true\"]{border-color:var(--brand);background:var(--brand-tint)}\n.mic .ico{width:15px;height:15px}\n.linha-msg{display:flex;gap:18px;align-items:flex-start}\n.linha-msg .bubble{flex:1 1 auto;min-width:0}\n.mic-dica{position:relative;flex:0 0 230px;background:var(--brand-tint);border:1.5px solid var(--brand);border-radius:12px;padding:10px 12px;font-size:.84rem;line-height:1.45;margin-top:6px}\n.mic-dica b{color:var(--brand)}\n.mic-dica::before{content:\"\";position:absolute;left:-9px;top:16px;width:14px;height:14px;background:var(--brand-tint);border-left:1.5px solid var(--brand);border-bottom:1.5px solid var(--brand);transform:rotate(45deg)}\n@media (max-width:760px){.linha-msg{flex-direction:column-reverse;gap:10px}.mic-dica{flex:none;margin-top:0}.mic-dica::before{left:auto;right:28px;top:auto;bottom:-9px;transform:rotate(-45deg)}}\n.bubble{background:var(--bubble);color:var(--bubble-fg);border-radius:4px 14px 14px 14px;padding:14px 16px;white-space:pre-line;max-width:600px;line-height:1.55;user-select:text;cursor:text}\n.acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}\n.btn{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:8px 14px;border-radius:9px;border:0;background:var(--brand);color:var(--on-brand);font-weight:700;font-size:.88rem;cursor:pointer}\n.btn.ghost{background:var(--surface);color:var(--brand);border:1.5px solid var(--brand)}\n.btn.done{background:var(--ok);color:#fff}\n.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}\n@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}\n.lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}\n.lista li{background:var(--brand-tint);border-radius:8px;padding:8px 12px;font-weight:600;font-size:.9rem}\n.tec{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:.92rem}\n.tec dt{font-weight:700;color:var(--muted)}\n.tec dd{margin:0}\n.aguard{color:var(--warn);font-weight:600}\n.pendente{border:1.5px dashed var(--gold-strong);background:var(--gold-tint);border-radius:10px;padding:14px;font-size:.9rem}\n.pendente b{color:var(--gold-strong)}\n.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}\ntable{border-collapse:collapse;width:100%;font-size:.88rem}\nth,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}\nthead th{background:var(--brand-tint);color:var(--brand);font-family:var(--display);font-size:.78rem}\ntbody tr:last-child>*{border-bottom:0}\ntd.nao{color:var(--muted)}\n.grade{border:1px solid var(--line);border-radius:12px;overflow:hidden}\n.grade-cols{column-count:2;column-gap:28px;column-rule:1px solid var(--line);padding:14px 18px;font-size:.86rem}\n.ano-tit{display:inline-block;margin:0 0 8px;font-family:var(--display);font-size:.8rem;font-weight:700;color:var(--brand);background:var(--brand-tint);border:1.5px solid var(--brand);padding:3px 12px;border-radius:99px;break-after:avoid}\n.ano-tit:not(:first-child){margin-top:14px}\n.mod{break-inside:avoid;margin-bottom:10px}\n@media (max-width:640px){.grade-cols{column-count:1}}\n.grade-head{background:var(--brand);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}\n.grade-head b{font-family:var(--display)}\n.grade-head span{color:#FFFFFF;opacity:.85;font-size:.82rem;font-weight:600}\n.ano{padding:12px 14px;border-right:1px solid var(--line);font-size:.84rem;display:flex;flex-direction:column;gap:6px}\n.ano h4{margin:0;font-family:var(--display);color:var(--brand);font-size:.92rem}\n.mod small{display:block;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}\n.nota{border:1.5px dashed var(--gold-strong);border-radius:10px;padding:10px 12px;font-size:.84rem;background:var(--gold-tint)}\n.nota b{color:var(--gold-strong)}\n.ficha-tit{background:var(--brand);color:#fff;font-family:var(--display);font-weight:700;padding:14px 18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}\n.ficha-tit span{color:#FFFFFF;opacity:.85;font-size:.8rem;font-weight:600}\n.ficha-tab{font-size:.95rem}\n.ficha-tab th{width:34%;background:var(--brand-tint);color:var(--brand);font-weight:700;padding:12px 18px}\n.ficha-tab td{padding:12px 18px}\n.objs{display:flex;flex-direction:column;gap:8px}\ndetails.obj{border:1.5px solid var(--brand);border-radius:12px;background:var(--surface);overflow:hidden}\ndetails.obj summary{background:var(--brand-tint);color:var(--brand)}\ndetails.obj summary:hover{filter:brightness(.97)}\ndetails.obj[open] summary{background:var(--brand);color:var(--on-brand)}\ndetails.obj[open] .aspas,details.obj[open] .chev,details.obj[open] .ou{color:var(--on-brand)}\ndetails.obj[open] .rot{color:var(--gold)}\ndetails.obj[open] .obj-corpo{padding-top:16px}\ndetails.obj summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;font-weight:700;font-size:1rem;min-height:52px}\ndetails.obj summary::-webkit-details-marker{display:none}\n.aspas{font-family:var(--display);font-size:1.6rem;line-height:1;color:var(--brand);height:18px}\n.chev{margin-left:auto;color:var(--brand);transition:transform .2s}\ndetails.obj[open] .chev{transform:rotate(180deg)}\n.obj-corpo{padding:0 16px 16px;display:flex;flex-direction:column;gap:10px}\n.preencher{background:var(--gold);color:#2D1246;border-radius:4px;padding:0 4px;font-weight:700}\n.ou{font-weight:500;color:var(--muted);font-size:.9rem;margin:0 4px}\n.rot{color:var(--brand);display:inline-block;min-width:6.5em;transition:opacity .3s}\n.nota.azul{background:var(--brand-tint);border-color:var(--brand)}\n.nota.azul b{color:var(--brand)}\n.roteiro{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}\n.etapa{position:relative;border:1.5px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}\n.etapa-num{align-self:flex-start;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--brand);color:var(--on-brand);padding:3px 10px;border-radius:99px}\n.etapa-tit{font-size:1rem;margin:0}\n.ligacao{display:flex;align-items:center;gap:10px;padding:8px 0 8px 22px;position:relative;font-size:.86rem;font-weight:700;color:var(--brand)}\n.ligacao::before{content:\"\";position:absolute;left:22px;top:0;bottom:0;border-left:2px dashed var(--brand)}\n.ligacao span{margin-left:16px;background:var(--brand-tint);padding:3px 10px;border-radius:99px}\n.ligacao span::before{content:\"↓ \"}\n.invest{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start}\n.invest-msg{display:flex;flex-direction:column;gap:10px;min-width:0}\n.invest-campos{display:flex;flex-direction:column;gap:12px;background:var(--brand-tint);border-radius:12px;padding:14px;position:sticky;top:12px}\n.prim-fixo{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:0 10px;height:42px;font-size:.95rem}\n.link-btn{border:0;background:none;color:var(--brand);font-weight:700;font-size:.84rem;cursor:pointer;text-decoration:underline;padding:4px 0;align-self:flex-start}\n.dica-prim{font-weight:500;color:var(--muted);font-size:.78rem}\n.campos-tit{margin:0;font-weight:800;font-size:.92rem;color:var(--brand)}\n.consulte{margin:2px 0 0;font-style:italic;font-weight:600;font-size:.84rem;color:#C0262D}\n.pct-res{font-size:.92rem;font-weight:500;color:var(--fg)}\n.pct-res b{color:var(--ok);font-size:1.05rem}\n@media (max-width:760px){.invest{grid-template-columns:minmax(0,1fr)}.invest-campos{order:-1;position:static}}\nbody.cel .invest{grid-template-columns:minmax(0,1fr)}\nbody.cel .invest-campos{order:-1;position:static}\n.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;background:var(--brand-tint);border-radius:12px;padding:14px}\n.campo{display:flex;flex-direction:column;gap:6px;font-size:.84rem;font-weight:700;color:var(--fg)}\n.campo small{font-weight:500;color:var(--muted)}\n.rs{display:flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:0 10px;height:42px}\n.rs:focus-within{border-color:var(--brand)}\n.rs b{color:var(--muted);font-size:.85rem}\n.rs input::placeholder{color:var(--muted);opacity:.55}\n.rs input{border:0;background:none;outline:none;font:inherit;font-size:1rem;color:var(--fg);width:100%;min-width:0}\n.rs.pct{max-width:110px}\n.chips-bolsa{display:flex;flex-wrap:wrap;gap:6px;align-items:center}\n.chip-b{border:1.5px solid var(--brand);background:var(--surface);color:var(--brand);border-radius:99px;padding:6px 11px;font-weight:700;font-size:.85rem;cursor:pointer}\n.chip-b[aria-pressed=\"true\"]{background:var(--brand);color:var(--on-brand)}\n.calc-res{font-size:.92rem;color:var(--muted)}\n.calc-res b{color:var(--ok);font-size:1.05rem}\n.parte{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}\n.cel-top{display:none}\n.cel-frame{display:flex;flex-direction:column;gap:18px}\n/* modo celular: simula a tela de um celular de 390px */\nbody.cel .side{display:none}\nbody.cel .app{grid-template-columns:minmax(0,1fr)}\nbody.cel .toolbar{max-width:900px;margin:0 auto 14px}\nbody.cel .wrap{gap:0}\nbody.cel .cel-frame{width:414px;max-width:100%;margin:0 auto;border:10px solid #1B1B22;border-radius:36px;background:var(--bg);padding:0 12px 22px;overflow:hidden;display:flex;flex-direction:column;gap:14px;max-height:780px;overflow-y:auto}\nbody.cel .cel-top{display:flex;gap:10px;align-items:center;background:var(--side);color:#fff;padding:12px 14px;margin:0 -12px;width:auto;position:sticky;top:0;z-index:5}\nbody.cel .abas{display:flex;flex-wrap:wrap;gap:6px;border-bottom:0;overflow:visible}\nbody.cel .aba{flex:0 0 auto;border:1.5px solid var(--line);border-radius:99px;padding:7px 13px;margin:0;background:var(--surface)}\nbody.cel .aba small{display:none}\nbody.cel .aba b{font-size:.85rem}\nbody.cel .aba[aria-selected=\"true\"]{background:var(--brand);border-color:var(--brand)}\nbody.cel .aba[aria-selected=\"true\"] b{color:var(--on-brand)}\nbody.cel .grade-cols{column-count:1}\nbody.cel .linha-msg{flex-direction:column-reverse;gap:10px}\nbody.cel .mic-dica{flex:none;margin-top:0}\nbody.cel .mic-dica::before{left:auto;right:28px;top:auto;bottom:-9px;transform:rotate(-45deg)}\nbody.cel .grid2{grid-template-columns:minmax(0,1fr)}\nbody.cel .head h1{font-size:1.5rem}\nbody.cel .ficha-tab th{width:42%;padding:10px 12px}\nbody.cel .ficha-tab td{padding:10px 12px}\nbody.cel .card{padding:14px}\n.modal-fundo{position:fixed;inset:0;background:rgba(10,20,40,.55);display:grid;place-items:center;z-index:70;padding:16px}\n.modal-fundo[hidden]{display:none}\n.modal{background:var(--surface);border-radius:14px;padding:20px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:5px solid var(--gold)}\n.modal h2{font-size:1.1rem;color:var(--warn)}\n.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--side);color:#fff;padding:10px 16px;border-radius:9px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;z-index:50}\n.toast.on{opacity:1}\n@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}}\n<\/style><style>.side,.toolbar{display:none!important}.app{grid-template-columns:minmax(0,1fr)!important}main{padding:16px 16px 60px!important}<\/style>\n\n<div class=\"app\">\n  <aside class=\"side\">\n    <div class=\"brand\"><small>UniCesumar<\/small><strong>Playbook Interativo<\/strong><\/div>\n    <nav>\n      <a href=\"#\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><\/svg>Início<\/a>\n      <a href=\"#\" class=\"on\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><path d=\"M2 9l10-5 10 5-10 5z\"/><path d=\"M6 11v5c3 2 9 2 12 0v-5\"/><\/svg>Cursos<\/a>\n      <a href=\"#\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c1-4 4-6 8-6s7 2 8 6\"/><\/svg>Teste de Perfil<\/a>\n      <a href=\"#\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"7\" height=\"16\" rx=\"1.5\"/><rect x=\"14\" y=\"4\" width=\"7\" height=\"16\" rx=\"1.5\"/><\/svg>Comparativo de cursos<\/a>\n      <a href=\"#\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01\"/><\/svg>Dúvidas do novo modelo<\/a>\n      <a href=\"#\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M5.6 5.6l12.8 12.8\"/><\/svg>Cursos descontinuados<\/a>\n    <\/nav>\n    <p class=\"nota-side\">Esboço da ficha de curso. Menu igual ao do material emergencial.<\/p>\n  <\/aside>\n\n  <main id=\"main\">\n    <div class=\"wrap\">\n      <div class=\"toolbar\">\n        <div class=\"troca\" role=\"group\" aria-label=\"Ver como\">\n          <button type=\"button\" data-tela=\"pc\" aria-pressed=\"true\">Computador<\/button>\n          <button type=\"button\" data-tela=\"cel\" aria-pressed=\"false\">Celular<\/button>\n        <\/div>\n        <div class=\"troca\" role=\"group\" aria-label=\"Curso de exemplo\">\n          <button type=\"button\" data-curso=\"gf\" aria-pressed=\"true\">Exemplo EAD: Gestão de Farmácia<\/button>\n          <button type=\"button\" data-curso=\"ped\" aria-pressed=\"false\">Exemplo semipresencial: Pedagogia<\/button>\n        <\/div>\n        \n      <\/div>\n\n      <div class=\"cel-frame\">\n        <div class=\"cel-top\"><svg class=\"ico\" viewBox=\"0 0 24 24\"><path d=\"M3 6h18M3 12h18M3 18h18\"/><\/svg><b>Playbook Interativo<\/b><\/div>\n        <div class=\"head\" id=\"head\"><\/div>\n        <div class=\"abas\" role=\"tablist\" id=\"abas\"><\/div>\n        <div class=\"painel\" id=\"painel\"><\/div>\n      <\/div>\n    <\/div>\n  <\/main>\n<\/div>\n<div class=\"toast\" id=\"toast\" role=\"status\"><\/div>\n<div class=\"modal-fundo\" id=\"modalBolsa\" hidden>\n  <div class=\"modal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"modalTit\">\n    <h2 id=\"modalTit\">Atenção: confirme a bolsa<\/h2>\n    <p id=\"modalTxt\"><\/p>\n    <p>Confirme se a bolsa está correta antes de copiar a mensagem.<\/p>\n    <div class=\"acoes\">\n      <button type=\"button\" class=\"btn ghost\" data-modal=\"voltar\">Voltar e conferir<\/button>\n      <button type=\"button\" class=\"btn\" data-modal=\"copiar\">Está correta, copiar<\/button>\n    <\/div>\n  <\/div>\n<\/div>\n\n<script>\nconst ICO_COPY='<svg class=\"ico\" viewBox=\"0 0 24 24\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/><\/svg>';\nconst ICO_SWAP='<svg class=\"ico\" viewBox=\"0 0 24 24\"><path d=\"M17 1l4 4-4 4\"/><path d=\"M3 11V9a4 4 0 0 1 4-4h14\"/><path d=\"M7 23l-4-4 4-4\"/><path d=\"M21 13v2a4 4 0 0 1-4 4H3\"/><\/svg>';\nconst ICO_IMG='<svg class=\"ico\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/><path d=\"M21 15l-5-5L5 21\"/><\/svg>';\n\nconst APROV_EAD = `\\n\\n*Como você é aprovado:*\\n• Sua nota é composta por atividades (4 pontos) e prova presencial (6 pontos)\\n• Alcançando média 7,0, você garante sua aprovação\\n• Caso precise, poderá contar com a prova substitutiva`;\nconst APROV_SEMI = `\\n\\n*Como você é aprovado:*\\n• Sua nota é composta por atividades (4 pontos) e prova presencial (6 pontos)\\n• Alcançando média 7,0 e participando dos encontros online e no Polo, você garante sua aprovação\\n• Caso precise, poderá contar com a prova substitutiva`;\n\nconst DIF = {\n  ead:[\n    \"Aqui você estuda no seu ritmo, pelo celular ou pelo computador, e organiza os estudos do jeito que encaixa no seu dia a dia. E você nunca fica sozinho: tem professor pra tirar suas dúvidas e o seu Polo pra te apoiar sempre que precisar!\",\n    \"Você escolhe a melhor hora pra estudar, de casa ou de onde estiver. E tem sempre alguém do seu lado: professores pra tirar suas dúvidas e o seu Polo pra te dar todo o suporte necessário!\"\n  ],\n  semi:[\n    \"No seu curso, você aprende junto com a turma e com o professor, nas aulas ao vivo e, ao longo da formação, nos encontros online e no seu Polo. O restante dos estudos você organiza no seu ritmo. É a combinação de prática e apoio de perto pra você se sentir seguro durante toda a sua formação.\"\n  ]\n};\nconst CTA = [\n  \"[Nome], vamos aproveitar essa oportunidade e garantir a sua vaga hoje! A sua nova fase começa agora, e daqui a alguns anos você vai olhar pra trás e sentir orgulho dessa decisão. Podemos seguir com a sua matrícula?\",\n  \"[Nome], vamos aproveitar e dar o primeiro passo hoje! Imagina você daqui a alguns anos, com o diploma na mão, trabalhando na área que escolheu e com a certeza de que cada etapa valeu a pena. Podemos garantir a sua vaga agora?\"\n];\nconst SEM_TEMPO = [\n  \"Eu te entendo, organizar a rotina é uma preocupação importante! E tenho uma boa notícia: os encontros são agendados por você mesmo, pela plataforma de estudos, escolhendo entre os horários disponíveis no calendário. E no caso dos encontros online, se surgir algum imprevisto, dá pra alterar o agendamento dentro do período.\",\n  \"Além disso, no 1º ano ainda não tem encontros: são aulas ao vivo que ficam gravadas pra você assistir quando puder. Assim você vai se adaptando aos poucos e, nos anos seguintes, já vai estar com a rotina organizada pra participar dos encontros. E você conta com o apoio do seu Polo em cada etapa. Vamos garantir a sua vaga e dar esse passo?\"\n];\nconst SEM_TEMPO_SEM_1ANO = \"E você não fica sozinho nessa organização: o seu Polo te apoia em cada etapa, e você planeja os encontros com antecedência, de acordo com a sua rotina. Vamos garantir a sua vaga e dar esse passo?\";\n// Perfis de rotina em que o 1º ano NÃO tem encontros (conferido no material emergencial)\nconst SEM_ENCONTRO_1ANO = new Set([\"lic\",\"lic5\",\"psico\",\"tea\",\"eng\",\"edf\",\"bio\",\"farm\"]);\n\nconst CURSOS = {\n  gf:{nome:\"Gestão de Farmácia\", area:\"EAD · Gestão e Negócios\", semi:false,\n    tags:[\"Tecnólogo\",\"EAD\",\"2 anos\"], mec:\"\", extensao:\"15% da carga horária do curso\",\n    abertura:\"[Nome], já se imaginou à frente de uma farmácia, cuidando da equipe e dos resultados, numa área que está sempre contratando? O curso de Gestão de Farmácia te prepara pra isso!\",\n    sobre:\"Forma quem vai cuidar da gestão de farmácias e drogarias, do estoque às vendas e à equipe, unindo administração e saúde num setor essencial, que está sempre contratando.\",\n    perfil:\"Esse curso combina com quem gosta de organizar, de lidar com pessoas e de ver os resultados acontecendo. Se você se imagina à frente de uma farmácia ou drogaria, cuidando do estoque, das vendas e da equipe, Gestão de Farmácia tem tudo a ver com você!\",\n    destaques:[\"Gestão de processos e estrutura da farmácia\",\"Ética e legislação farmacêutica\",\"Abordagens inovadoras no mercado farmacêutico\"],\n    carreira:\"No início da carreira, a remuneração fica entre R$3.200 e R$7.000, e pode ser maior em cargos de coordenação, gerência ou gestão de redes. Você pode atuar em farmácias e drogarias, redes farmacêuticas, distribuidoras e empresas do setor, cuidando de estoque, compras, vendas e equipes.\",\n    tecnica:[[\"Portaria de reconhecimento\",\"Portaria nº 912, de 15 de dezembro de 2025\"],[\"Carga horária\",null],[\"Estágio\",null]],\n    metodo:`*Como funciona o seu curso:*\\n• A cada 10 semanas, você cursa 2 disciplinas ao mesmo tempo\\n• Toda semana tem aula ao vivo pelo Teams, alternando entre as 2 disciplinas, e as aulas ficam gravadas para você assistir quando quiser\\n• O restante você estuda pela plataforma de estudos (Studeo), no seu horário\\n• Provas no Polo: uma na semana 9 e outra na semana 10, em datas que você agenda`+APROV_EAD,\n    rotina:null,\n    grade:[[\"1º ano\",[[1,[\"Cenários econômicos\",\"Teorias da administração\"]],[2,[\"Gestão de pessoas e desenvolvimento de equipes\",\"GO: projeto de vida\"]],[3,[\"Planejamento estratégico\",\"Produção do conhecimento científico, tecnológico e disrupção\"]],[4,[\"Contabilidade empresarial\",\"Gestão da qualidade\"]]]],\n           [\"2º ano\",[[5,[\"Fundamentos de marketing\",\"Mentalidade criativa e empreendedora\"]],[6,[\"Libras (optativa)\",\"Gestão da experiência do consumidor\",\"Gestão de custos e formação do preço de venda\"]],[7,[\"Estudo contemporâneo: relação de consumo e sustentabilidade\",\"Imersão profissional: estratégia de venda e gestão de resultados\",\"Administração orçamentária\",\"Gestão de processos e estrutura da farmácia\"]],[8,[\"Estudo contemporâneo: relações étnico-raciais, cultura e direitos humanos\",\"Imersão profissional: inovação e novas tecnologias nos negócios\",\"Ética e legislação farmacêutica\",\"Abordagens inovadoras no mercado farmacêutico\"]]]]],\n    objecoes:[\"caro\"]},\n  ped:{perfilRotina:\"lic\", nome:\"Pedagogia\", area:\"Semipresencial · Licenciaturas e Educação\", semi:true,\n    tags:[\"Licenciatura\",\"Semipresencial\",\"4 anos\"], mec:\"\", extensao:\"10% da carga horária do curso\",\n    abertura:\"[Nome], já se imaginou fazendo parte da história de cada criança que aprende a ler e a escrever com você? O curso de Pedagogia te prepara pra transformar vidas por meio da educação!\",\n    sobre:\"Forma quem vai ensinar e cuidar do desenvolvimento de crianças, jovens e adultos, para quem gosta de ensinar e de participar da formação de outras pessoas, especialmente das crianças.\",\n    perfil:\"Esse curso é pra quem gosta de gente e tem prazer em ensinar. Se você se imagina numa sala de aula, acompanhando o desenvolvimento das crianças, ou ajudando a formar pessoas em outros espaços, Pedagogia tem tudo a ver com você!\",\n    destaques:[\"Metodologia da alfabetização e letramento\",\"Educação inclusiva\",\"Neuroaprendizagem e saúde na educação\"],\n    carreira:\"No início da carreira, a remuneração fica em torno de R$3.000. Quem vira coordenador pedagógico pode chegar a R$13.000 ou mais em algumas cidades, principalmente com tempo de experiência e especialização.\",\n    tecnica:[[\"Carga horária\",null],[\"Estágio\",null]],\n    metodo:`*Como funciona o seu curso:*\\n• A cada 10 semanas, você cursa 2 disciplinas ao mesmo tempo\\n• *1º ano:* toda semana, 1 aula ao vivo de cada disciplina pelo Teams, que ficam gravadas para você assistir quando quiser\\n• *Do 2º ano em diante:* por semana, 2 encontros online interativos com a turma e o professor, e 2 encontros no Polo, de 3h cada\\n• Você agenda os encontros na plataforma de estudos (Studeo)\\n• Provas no Polo: uma na semana 9 e outra na semana 10, em datas que você agenda`+APROV_SEMI,\n    rotina:{anos:[\"1º ano\",\"2º ano\",\"3º ano\",\"4º ano\"],vivo:[\"Toda semana\",\"Não\",\"Não\",\"Não\"],asm:[\"Não\",\"2 por semana\",\"2 por semana\",\"2 por semana\"],polo:[\"Não\",\"2 por semana\",\"2 por semana\",\"2 por semana\"]},\n    grade:null,\n    objecoes:[\"caro\",\"tempo\"]}\n};\n\nconst ABAS = [\n  {id:\"ficha\", passo:\"Consulta\", nome:\"Ficha do curso\"},\n  {id:\"abertura\", passo:\"Acolher\", nome:\"Abertura\"},\n  {id:\"metodo\", passo:\"Explicar\", nome:\"Metodologia\"},\n  {id:\"grade\", passo:\"Mostrar\", nome:\"Grade\"},\n  {id:\"arg\", passo:\"Encantar\", nome:\"Argumentário\"},\n  {id:\"neg\", passo:\"Fechar\", nome:\"Negociação\"},\n  {id:\"obj\", passo:\"Se precisar\", nome:\"Objeções\"}\n];\n\nlet atual = \"gf\", aba = \"ficha\";\nconst VAR = {}; // índice da variação de cada mensagem\nconst $ = s => document.querySelector(s);\nconst esc = s => String(s).replace(/&/g,\"&amp;\").replace(/<\/g,\"&lt;\");\n\nfunction comNome(t){\n  const n = \"\";\n  if(n) return t.replace(/\\[Nome\\]/g, n);\n  return t.replace(/^\\[Nome\\],\\s*(.)/, (m,c)=>c.toUpperCase()).replace(/\\[Nome\\],?\\s*/g,\"\");\n}\nconst zap = s => esc(comNome(s)).replace(/\\*([^*\\n]+)\\*/g,\"<strong>$1<\/strong>\").replace(/(^|\\s|\\(|>)_([^_\\n]+)_/g,\"$1<em>$2<\/em>\").replace(/~([^~\\n]+)~/g,\"<s>$1<\/s>\").replace(/\\[(data|valor integral|valor com desconto|X)\\]/g,'<mark class=\"preencher\">[$1]<\/mark>');\n\nconst AUDIO = new Set([\"abertura\",\"perfil\",\"dif\",\"carreira\",\"cta\"]);\nconst ICO_MIC='<svg class=\"ico\" viewBox=\"0 0 24 24\"><rect x=\"9\" y=\"2\" width=\"6\" height=\"12\" rx=\"3\"/><path d=\"M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8\"/><\/svg>';\nfunction msg(id, titulo, num, sub, textos){\n  const i = VAR[id] || 0, t = textos[i];\n  return `<div class=\"card\" data-msg=\"${id}\">\n    <div class=\"passo\"><i><\/i><h2>${titulo}<\/h2>${AUDIO.has(id)?`<button type=\"button\" class=\"mic\" data-mic=\"${id}\" aria-expanded=\"false\" title=\"Dica: envie em áudio\">${ICO_MIC}<span>Dica de áudio<\/span><\/button>`:\"\"}<\/div>\n    ${sub?`<p class=\"sub\">${sub}<\/p>`:\"\"}\n    <div class=\"linha-msg\">\n      <div class=\"bubble\">${zap(t)}<\/div>\n      ${AUDIO.has(id)?`<div class=\"mic-dica\" id=\"mic-${id}\" hidden><b>Dica:<\/b> para humanizar o seu atendimento, experimente gravar um áudio com essa mensagem, do seu jeito e com as suas palavras. Se preferir, envie por escrito.<\/div>`:\"\"}\n    <\/div>\n    <div class=\"acoes\">\n      <button type=\"button\" class=\"btn\" data-copy=\"${id}\">${ICO_COPY}<span>Copiar mensagem<\/span><\/button>\n      ${textos.length>1?`<button type=\"button\" class=\"btn ghost\" data-var=\"${id}\">${ICO_SWAP}<span>Outra opção (${i+1} de ${textos.length})<\/span><\/button>`:\"\"}\n    <\/div><\/div>`;\n}\nconst TEXTOS = {};\nconst CALC = {cheia:\"\", final:\"\", prim:\"19,47\", editPrim:false};\nconst BOLSAS_PADRAO = [40, 50, 60];   // bolsas usuais; fora disso, pede confirmação antes de copiar\nlet ALERTA_BOLSA = null;            // texto do alerta quando a bolsa calculada foge do padrão\n// Ao trocar de aba ou de curso, os valores do investimento voltam a ficar em branco,\n// para nunca reaproveitar sem querer os valores de outro candidato.\nfunction zerarInvest(){ CALC.cheia=\"\"; CALC.final=\"\"; CALC.prim=\"19,47\"; CALC.editPrim=false; }\nconst PONT = 10;          // desconto de pontualidade fixo\nconst PRIMEIRA = 19.47;   // 1ª mensalidade da campanha\nconst num = v => { const n = parseFloat(String(v).replace(/\\./g,\"\").replace(\",\", \".\")); return isNaN(n) ? null : n; };\nconst brl = n => n.toLocaleString(\"pt-BR\",{style:\"currency\",currency:\"BRL\"});\nfunction montarInvest(){\n  const c = CURSOS[atual], cheia = num(CALC.cheia), final = num(CALC.final);\n  const res = document.getElementById(\"calcRes\"), out = document.getElementById(\"calcMsg\"); if(!out) return;\n  const completo = cheia && final;\n  ALERTA_BOLSA = null;\n  let bolsaTxt = \"[X]\";\n  if(completo){\n  // valor com desconto = integral × (1 − bolsa) × (1 − 10%)  →  bolsa = 1 − desconto ÷ (integral × 0,9)\n  const bolsaExata = (1 - final / (cheia * (1 - PONT/100))) * 100;\n  // até 1 ponto de diferença de uma bolsa usual (ex.: 50,5%) conta como a bolsa usual; 42%, 53%, 64% pedem confirmação\n  const usual = BOLSAS_PADRAO.find(b => Math.abs(bolsaExata - b) < 1);\n  const bolsa = usual !== undefined ? usual : Math.round(bolsaExata);\n  if(bolsa < 0 || bolsa >= 100){ res.innerHTML = '<span class=\"aguard\">Confira os valores: o desconto não bate com a regra bolsa + 10% de pontualidade.<\/span>'; }\n  else {\n    const aviso = Math.abs(bolsaExata - bolsa) > 0.3 ? ' <small class=\"aguard\">(aproximado, confira)<\/small>' : \"\";\n    res.innerHTML = `<b>${bolsa}% de bolsa<\/b> + ${PONT}% de pontualidade${aviso}`;\n    bolsaTxt = String(bolsa);\n    const padrao = usual !== undefined;\n    if(!padrao && !c.agoraEuPosso) ALERTA_BOLSA = `A bolsa calculada deu <b>${bolsaTxt}%<\/b>, diferente das bolsas usuais (40%, 50% ou 60%) + 10% de pontualidade.`;\n  }\n  } else { res.textContent = \"--\"; }\n  const txt = [\n    \"*_Condição especial para sua matrícula!_*\", \"\",\n    `Hoje você pode garantir sua vaga em *${c.nome}* com uma condição promocional exclusiva:`, \"\",\n    ...(num(CALC.prim) ? [`• *1ª Mensalidade:* Apenas ${brl(num(CALC.prim))}`, \"\"] : []),\n    num(CALC.prim) ? \"• *Demais Mensalidades:*\" : \"• *Mensalidades:*\",\n    cheia ? `De *${brl(cheia)}*` : \"De *R$ [valor integral]*\",\n    `Por *APENAS ${final ? brl(final) : \"R$ [valor com desconto]\"}*!`,\n    `_(Valor com ${bolsaTxt}% de bolsa + ${PONT}% de pontualidade incluso.)_`, \"\",\n    \"📌 _Informações Importantes:_\", \"\",\n    \"• *Vencimento das mensalidades:* dia 10 de cada mês, para garantir o desconto de pontualidade.\",\n    \"• *Reajuste:* acontece apenas uma vez ao ano, com média entre 8% e 10%.\",\n    \"• *Condições válidas* para matrículas realizadas na data da oferta.\"\n  ].join(\"\\n\");\n  TEXTOS.invest = [txt];\n  out.innerHTML = zap(txt);\n}\n\nfunction render(){\n  const c = CURSOS[atual];\n  $(\"#head\").innerHTML = `<a class=\"voltar\" href=\"#\">‹ Cursos<\/a><span class=\"eyebrow\">${c.area}<\/span><h1>${c.nome}<\/h1>\n    <div class=\"tags\">${c.tags.map(t=>`<span class=\"tag\">${t}<\/span>`).join(\"\")}${c.mec?`<span class=\"tag ok\">${c.mec}<\/span>`:\"\"}<\/div>`;\n  $(\"#abas\").innerHTML = ABAS.map(a=>`<button type=\"button\" class=\"aba\" role=\"tab\" aria-selected=\"${a.id===aba}\" data-aba=\"${a.id}\"><small>${a.passo}<\/small><b>${a.nome}<\/b><\/button>`).join(\"\");\n  const P = {};\n  const [grau, modal, dur] = c.tags;\n  const AG = '<span class=\"aguard\">Aguardando atualização pós-marco regulatório<\/span>';\n  const tec = Object.fromEntries(c.tecnica);\n  TEXTOS.perfil=[c.perfil];\n  // Ficha do curso (consulta do consultor)\n  P.ficha = `\n    <div class=\"card\" style=\"padding:0;overflow:hidden\">\n      <div class=\"ficha-tit\">${c.nome}<span>Ficha técnica<\/span><\/div>\n      <table class=\"ficha-tab\"><tbody>\n        <tr><th>Grau<\/th><td>${grau}<\/td><\/tr>\n        <tr><th>Modalidade<\/th><td>${modal}<\/td><\/tr>\n        <tr><th>Duração<\/th><td>${dur}<\/td><\/tr>\n        <tr><th>Carga horária<\/th><td>${tec[\"Carga horária\"]?esc(tec[\"Carga horária\"]):AG}<\/td><\/tr>\n        <tr><th>Estágio<\/th><td>${tec[\"Estágio\"]?esc(tec[\"Estágio\"]):AG}<\/td><\/tr>\n        <tr><th>Atividades de extensão<\/th><td>${c.extensao}<\/td><\/tr>\n        <tr><th>Reconhecimento MEC<\/th><td>${AG}<\/td><\/tr>\n      <\/tbody><\/table>\n    <\/div>\n    ${msg(\"perfil\",\"Perfil de quem faz\",0,\"Ajuda o consultor a entender se o curso combina, e pode ser enviado ao candidato.\",TEXTOS.perfil)}`;\n  // Abertura do atendimento\n  TEXTOS.abertura = [`[Nome], esse curso é uma excelente escolha! ${c.sobre}\\n\\n*Vou te apresentar agora as principais informações do curso, e qualquer dúvida é só me chamar. Vou te acompanhar em cada etapa, será um prazer te ajudar!*`];\n  const linhas = [`*${c.nome}*`, `• Grau: ${grau}`, `• Modalidade: ${modal}`, `• Duração: ${dur}`];\n  if(c.mec) linhas.push(`• Curso reconhecido pelo MEC`);\n  TEXTOS.resumo = [linhas.join(\"\\n\")];\n  P.abertura = `\n    ${msg(\"abertura\",\"Abertura do atendimento\",1,\"Apresenta o curso e se coloca à disposição do candidato.\",TEXTOS.abertura)}\n    ${msg(\"resumo\",\"Resumo do curso\",2,\"Logo depois da abertura, para o candidato ter as informações principais num só lugar.\",TEXTOS.resumo)}\n    <div class=\"nota\"><b>Estágio e carga horária<\/b> ficam fora do resumo enquanto estão aguardando atualização pós-marco regulatório. Quando a informação chegar, o material será atualizado.<\/div>`;\n  // Grade curricular\n  TEXTOS.destaques = [`Ao longo do curso, você vai estudar disciplinas como *${c.destaques[0]}*, *${c.destaques[1]}* e *${c.destaques[2]}*, entre outras conectadas com a prática da profissão.`];\n  P.grade = `\n    <div class=\"card\"><div class=\"acoes\" style=\"justify-content:space-between\"><h2>Grade curricular<\/h2>${c.grade?`<button type=\"button\" class=\"btn ghost\" data-act=\"img\">${ICO_IMG}<span>Copiar como imagem<\/span><\/button>`:\"\"}<\/div>\n      ${c.grade?`<div class=\"grade\"><div class=\"grade-head\"><b>${c.nome}<\/b><span>Grade curricular<\/span><\/div><div class=\"grade-cols\">${c.grade.map(([ano,mods])=>`<h4 class=\"ano-tit\">${ano}<\/h4>${mods.map(([m,ds])=>`<div class=\"mod\"><small>Módulo ${m}<\/small>${ds.map(d=>`• ${esc(d)}`).join(\"<br>\")}<\/div>`).join(\"\")}`).join(\"\")}<\/div><\/div>`\n      :`<p class=\"aguard\">Grade em atualização.<\/p>`}\n    <\/div>\n    ${msg(\"destaques\",\"Disciplinas em destaque\",0,\"Opcional: um complemento para enviar junto com a imagem da grade.\",TEXTOS.destaques)}`;\n  // 2. Metodologia\n  TEXTOS.metodo=[c.metodo];\n  P.metodo = `${msg(\"metodo\",\"Como funciona o curso\",3,\"Envie pelo WhatsApp para explicar a rotina e a aprovação.\",TEXTOS.metodo)}\n    ${c.rotina?`<div class=\"card\"><h2>Rotina por ano<\/h2><div class=\"table-wrap\"><table><thead><tr><th><\/th>${c.rotina.anos.map(a=>`<th>${a}<\/th>`).join(\"\")}<\/tr><\/thead><tbody>\n      <tr><th>Aulas ao vivo<\/th>${c.rotina.vivo.map(v=>`<td class=\"${/^Não/.test(v)?\"nao\":\"\"}\">${v}<\/td>`).join(\"\")}<\/tr>\n      <tr><th>Encontros online (ASM)<\/th>${c.rotina.asm.map(v=>`<td class=\"${/^Não/.test(v)?\"nao\":\"\"}\">${v}<\/td>`).join(\"\")}<\/tr>\n      <tr><th>Encontros no Polo<\/th>${c.rotina.polo.map(v=>`<td class=\"${/^Não/.test(v)?\"nao\":\"\"}\">${v}<\/td>`).join(\"\")}<\/tr><\/tbody><\/table><\/div>\n      <p class=\"sub\">Provas no Polo nas semanas 9 e 10 de todos os anos. No Polo, os encontros são teóricos, em sala Mova Play.<\/p><\/div>`:\"\"}`;\n  // 3. Argumentário\n  TEXTOS.carreira=[c.carreira]; TEXTOS.dif = c.semi?DIF.semi:DIF.ead;\n  P.arg = `${msg(\"dif\",\"Por que a UniCesumar\",0,c.semi?\"Versão para cursos semipresenciais.\":\"Versão para cursos EAD.\",TEXTOS.dif)}\n    ${msg(\"carreira\",\"Carreira\",0,\"Onde o candidato pode chegar com esse curso.\",TEXTOS.carreira)}`;\n  // 4. Negociação\n  TEXTOS.cta=CTA;\n  P.neg = `<div class=\"card\"><div class=\"passo\"><i><\/i><h2>Investimento<\/h2><\/div>\n      <p class=\"sub\">Copie o modelo e complete os campos em amarelo, ou use os campos ao lado para a mensagem se completar sozinha, com a porcentagem da bolsa calculada.<\/p>\n      <div class=\"invest\">\n        <div class=\"invest-msg\">\n          <div class=\"bubble\" id=\"calcMsg\"><\/div>\n          <div class=\"acoes\"><button type=\"button\" class=\"btn\" data-copy=\"invest\">${ICO_COPY}<span>Copiar mensagem<\/span><\/button><\/div>\n        <\/div>\n        <div class=\"invest-campos\">\n          <div><p class=\"campos-tit\">Completar automaticamente <small>(opcional)<\/small><\/p><p class=\"consulte\">Consulte os valores no site oficial.<\/p><\/div>\n          <label class=\"campo\"><span>Valor integral<\/span><div class=\"rs\"><b>R$<\/b><input id=\"cCheia\" inputmode=\"decimal\" value=\"${CALC.cheia}\" aria-label=\"Valor integral em reais\"><\/div><\/label>\n          <label class=\"campo\"><span>Valor com desconto<\/span><div class=\"rs\"><b>R$<\/b><input id=\"cFinal\" inputmode=\"decimal\" value=\"${CALC.final}\" aria-label=\"Valor com desconto em reais\"><\/div><\/label>\n          <div class=\"campo prim\">\n            <span>1ª mensalidade<\/span>\n            ${CALC.editPrim\n              ? `<div class=\"rs\"><b>R$<\/b><input id=\"cPrim\" inputmode=\"decimal\" value=\"${CALC.prim}\" aria-label=\"Primeira mensalidade em reais\"><\/div>\n                 <button type=\"button\" class=\"link-btn\" data-prim=\"ok\">Concluir<\/button>`\n              : `<div class=\"prim-fixo\"><b>${CALC.prim ? \"R$ \" + CALC.prim : \"Sem condição especial\"}<\/b><button type=\"button\" class=\"link-btn\" data-prim=\"edit\">Editar<\/button><\/div>`}\n          <\/div>\n          <div class=\"campo\"><span>Desconto calculado<\/span><div class=\"pct-res\" id=\"calcRes\">--<\/div><\/div>\n        <\/div>\n      <\/div>\n      <div class=\"nota\"><b>Confira antes de enviar:<\/b> os valores precisam ser os da campanha vigente para o Polo do candidato.<\/div>\n    <\/div>\n    ${msg(\"cta\",\"Chamada para ação\",8,\"Para conduzir o candidato a garantir a vaga.\",TEXTOS.cta)}`;\n  // 5. Objeções\n  TEXTOS.caro=[\"(Mensagem em definição)\"]; TEXTOS.tempo1=[SEM_TEMPO[0]]; TEXTOS.tempo2=[SEM_TEMPO[1]];\n  const CHEV='<svg class=\"ico chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/><\/svg>';\n  // roteiro de objeção: etapas em ordem, com ligação entre elas\n  const roteiro = (etapas) => `<ol class=\"roteiro\">${etapas.map((e,i)=>{ TEXTOS[e.id]=[e.txt]; return `\n      ${i>0?`<li class=\"ligacao\" aria-hidden=\"true\"><span>${e.quando}<\/span><\/li>`:\"\"}\n      <li class=\"etapa\">\n        <span class=\"etapa-num\">Passo ${i+1}<\/span>\n        <h3 class=\"etapa-tit\">${e.tit}<\/h3>\n        <div class=\"bubble\">${zap(e.txt)}<\/div>\n        <div class=\"acoes\"><button type=\"button\" class=\"btn\" data-copy=\"${e.id}\">${ICO_COPY}<span>Copiar passo ${i+1}<\/span><\/button><\/div>\n        ${e.nota?`<div class=\"nota\">${e.nota}<\/div>`:\"\"}\n      <\/li>`;}).join(\"\")}<\/ol>`;\n  const obj = (frase, etapas) => `<details class=\"obj\" name=\"objecoes\"><summary><span class=\"aspas\">“<\/span><span>${frase}<\/span>${CHEV}<\/summary>\n      <div class=\"obj-corpo\">${roteiro(etapas)}<\/div><\/details>`;\n  const objTempo = c.semi ? obj(\"Não tenho tempo para os encontros\", [\n      {id:\"tempo1\", tit:\"Acolha e explique o agendamento\", txt:SEM_TEMPO[0]},\n      {id:\"tempo2\", quando:\"Em seguida, envie\", tit:\"Dê segurança e convide\", txt:SEM_ENCONTRO_1ANO.has(c.perfilRotina) ? SEM_TEMPO[1] : SEM_TEMPO_SEM_1ANO}\n    ]) : \"\";\n  const objPensar = obj('Vou pensar <span class=\"ou\">ou<\/span> Preciso falar com <span class=\"rot\" id=\"rot\">minha mãe<\/span>', [\n      {id:\"pensar1\", tit:\"Pergunte se ficou alguma dúvida\", txt:\"[Nome], compreendo! Antes de você analisar, ficou alguma dúvida sobre o curso, a metodologia ou o valor que eu possa esclarecer?\"},\n      {id:\"pensar2\", quando:\"Se ele não tiver dúvidas\", tit:\"Proponha um retorno\", txt:\"[Nome], compreendo. É importante analisar com calma. Que tal agendarmos um retorno para o dia [data]? Assim você consegue avaliar, e eu verifico a possibilidade de manter essa condição pra você até essa data.\",\n       nota:\"<b>Acompanhe o candidato:<\/b> agende o retorno para 1 ou 2 dias depois, sempre dentro do período da campanha vigente, e chame o candidato no dia combinado.\"}\n    ]);\n  const objMedo = obj(\"Tenho medo de não dar conta dos estudos\", [\n      {id:\"medo1\", tit:\"Entenda de onde vem o receio\", txt:\"[Nome], eu entendo, é normal ter esse receio! Me conta: ele está mais ligado ao conteúdo do curso, à rotina de estudos ou ao uso da plataforma? Ou é alguma outra coisa?\"},\n      {id:\"medo2\", quando:\"Depois que ele responder\", tit:\"Tranquilize\", txt:\"É compreensível se sentir assim no começo, e a boa notícia é que ninguém precisa saber tudo antes de começar. O conteúdo é apresentado aos poucos, uma etapa de cada vez, e você conta com os professores pra tirar suas dúvidas e com o seu Polo pra te apoiar sempre que precisar. A adaptação acontece no seu ritmo. O que acha de dar esse primeiro passo?\",\n       nota:\"<b>Dica:<\/b> use o que o candidato respondeu para personalizar esta mensagem.\"}\n    ]);\n  const objConc = obj(\"Encontrei mais barato em outra faculdade\", [\n      {id:\"conc1\", tit:\"Entenda a proposta\", txt:\"[Nome], compreendo, é natural comparar antes de decidir! Me conta: o que mais chamou a sua atenção nessa outra proposta?\"},\n      {id:\"conc2\", quando:\"Depois que ele responder\", tit:\"Mostre a segurança da UniCesumar\", txt:\"Faz todo sentido avaliar o valor. E é importante considerar também a segurança da sua formação: aqui na UniCesumar, você começa a sua graduação num modelo já atualizado e alinhado às novas exigências do MEC, com o seu Polo pra te apoiar e professores pra te acompanhar. Assim você estuda com tranquilidade do começo ao fim. Ficou alguma dúvida que eu possa esclarecer pra você decidir com segurança?\",\n       nota:\"<b>Importante:<\/b> nunca fale mal de outra instituição. Destaque o que a UniCesumar oferece.\"}\n    ]);\n  const objCaro = `<details class=\"obj\" name=\"objecoes\">\n      <summary><span class=\"aspas\">“<\/span>Está caro${CHEV}<\/summary>\n      <div class=\"obj-corpo\"><div class=\"nota\"><b>Mensagem em definição.<\/b> Será escrita junto com a mensagem de investimento.<\/div><\/div><\/details>`;\n  P.obj = `<div class=\"card\"><h2>O que o candidato disse?<\/h2><p class=\"sub\">Toque na frase para ver o roteiro. São sugestões para inspirar: adapte ao jeito de cada conversa.<\/p>\n      <div class=\"objs\">${c.semi ? objTempo + objPensar + objMedo + objCaro + objConc : objPensar + objMedo + objCaro + objConc}<\/div><\/div>`;\n  $(\"#painel\").innerHTML = P[aba];\n  if(aba===\"neg\") montarInvest();\n}\n\nlet tT;\nfunction toast(m){ const t=$(\"#toast\"); t.textContent=m; t.classList.add(\"on\"); clearTimeout(tT); tT=setTimeout(()=>t.classList.remove(\"on\"),1800); }\ndocument.addEventListener(\"click\", async e=>{\n  const md = e.target.closest(\"[data-modal]\");\n  if(md){ const m=document.getElementById(\"modalBolsa\"); m.hidden=true;\n    if(md.dataset.modal===\"copiar\"){ const bt=document.querySelector('[data-copy=\"invest\"]'); bt.dataset.ok=\"1\"; bt.click(); }\n    return; }\n  const inv = e.target.closest('[data-copy=\"invest\"]');\n  if(inv && ALERTA_BOLSA && inv.dataset.ok!==\"1\"){\n    document.getElementById(\"modalTxt\").innerHTML = ALERTA_BOLSA;\n    document.getElementById(\"modalBolsa\").hidden = false; return; }\n  if(inv) delete inv.dataset.ok;\n  const tl = e.target.closest(\"[data-tela]\");\n  if(tl){ document.body.classList.toggle(\"cel\", tl.dataset.tela===\"cel\"); document.querySelectorAll(\"[data-tela]\").forEach(b=>b.setAttribute(\"aria-pressed\", b===tl)); return; }\n  const t = e.target.closest(\"[data-curso],[data-aba],[data-copy],[data-var],[data-act],[data-mic]\"); if(!t) return;\n  if(t.dataset.mic){ const d=document.getElementById(\"mic-\"+t.dataset.mic); d.hidden=!d.hidden; t.setAttribute(\"aria-expanded\", String(!d.hidden)); return; }\n  if(t.dataset.curso){ atual=t.dataset.curso; zerarInvest(); document.querySelectorAll(\"[data-curso]\").forEach(b=>b.setAttribute(\"aria-pressed\",b===t)); render(); }\n  else if(t.dataset.aba){ if(t.dataset.aba!==aba) zerarInvest(); aba=t.dataset.aba; render(); }\n  else if(t.dataset.var){ const id=t.dataset.var; VAR[id]=((VAR[id]||0)+1)%TEXTOS[id].length; render(); }\n  else if(t.dataset.copy){ const id=t.dataset.copy; const txt=comNome(TEXTOS[id][VAR[id]||0]);\n    try{ await copiarTexto(txt); }catch(err){ toast(\"Selecione o texto e copie com Ctrl+C\"); return; }\n    if(t.classList.contains(\"btn\")){ const o=t.innerHTML; t.classList.add(\"done\"); t.innerHTML=ICO_COPY+\"<span>Copiado!<\/span>\"; setTimeout(()=>{t.classList.remove(\"done\"); t.innerHTML=o;},1600); } }\n  else if(t.dataset.act===\"img\"){ toast(\"No Playbook, copia a grade como imagem\"); }\n});\nrender();\n// fecha as outras objeções quando uma é aberta (também para navegadores sem suporte a \"name\")\ndocument.addEventListener(\"input\", e=>{\n  const m = {cCheia:\"cheia\", cFinal:\"final\", cPrim:\"prim\"}[e.target.id]; if(!m) return;\n  CALC[m] = e.target.value; montarInvest();\n});\ndocument.addEventListener(\"click\", e=>{ const b=e.target.closest(\"[data-prim]\"); if(!b) return;\n  CALC.editPrim = b.dataset.prim===\"edit\"; render();\n  if(CALC.editPrim){ const i=document.getElementById(\"cPrim\"); if(i){ i.focus(); i.select(); } } });\ndocument.addEventListener(\"toggle\", e=>{ const d=e.target; if(!(d instanceof HTMLDetailsElement) || !d.open || !d.classList.contains(\"obj\")) return;\n  document.querySelectorAll(\"details.obj[open]\").forEach(o=>{ if(o!==d) o.open=false; }); }, true);\nconst ROT=[\"minha mãe\",\"meu pai\",\"meu esposo\",\"minha esposa\",\"minha família\"]; let ri=0;\nconst calma = window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches;\nsetInterval(()=>{ const el=document.getElementById(\"rot\"); if(!el||calma) return; el.style.opacity=0; setTimeout(()=>{ ri=(ri+1)%ROT.length; el.textContent=ROT[ri]; el.style.opacity=1; },300); },2200);\n<\/script>\n<script>(function(){const p=new URLSearchParams(location.hash.slice(1));})();async function copiarTexto(t){try{await navigator.clipboard.writeText(t);return;}catch(e){}try{await parent.navigator.clipboard.writeText(t);return;}catch(e){}const x=document.createElement(\"textarea\");x.value=t;x.style.position=\"fixed\";x.style.opacity=\"0\";document.body.appendChild(x);x.select();const ok=document.execCommand(\"copy\");x.remove();if(!ok)throw new Error(\"copy\");}document.addEventListener(\"click\",e=>{const v=e.target.closest(\".voltar\");if(v){e.preventDefault();e.stopPropagation();parent.voltarFicha&&parent.voltarFicha();}},true);if(window.__CURSO__){atual=window.__CURSO__;render();}<\/script>";
+const FICHA_ID = {"gestao-de-farmacia":"gf","pedagogia":"ped"};
+let FICHA = null;
+function abrirFicha(id){ FICHA = id; TELA = "fichas"; render(); scrollTo(0,0); }
+window.voltarFicha = () => { FICHA = null; render(); };
+function telaFicha(){
+  const c = C[FICHA], k = FICHA_ID[FICHA];
+  if (k) return `<div class="ficha-wrap"><iframe id="fichaFrame" allow="clipboard-write" title="Ficha de ${esc(c.n)}"></iframe></div>`;
+  return `<div class="head"><button class="link" data-voltarficha>${svg("voltar")} Cursos</button><span class="eyebrow">${esc(c.a)} · ${esc(c.g)}</span><h1>${esc(c.n)}</h1>
+      <p class="sub">${esc(c.grau)} · ${esc(c.m)}${DUR[FICHA]?" · "+esc(DUR[FICHA]):""}</p></div>
+    <div class="card"><b>Ficha em preenchimento</b><p class="sub">Os textos deste curso entram depois da coleta da Bússola. Nesta versão de apresentação, as fichas completas de exemplo são <button class="link" data-curso="gestao-de-farmacia">Gestão de Farmácia</button> (EAD) e <button class="link" data-curso="pedagogia">Pedagogia</button> (semipresencial).</p></div>`;
+}
+function montarFrame(){
+  const f = document.getElementById("fichaFrame"); if (!f) return;
+  f.addEventListener("load", () => { try{ f.contentWindow.__CURSO__ = FICHA_ID[FICHA]; f.contentWindow.atual = FICHA_ID[FICHA]; f.contentWindow.render(); }catch(e){} }, {once:true});
+  f.srcdoc = FICHA_HTML.replace('<script>(function(){', '<script>window.__CURSO__="'+FICHA_ID[FICHA]+'";(function(){');
+}
+
+
+/* ---------- Início: busca geral ---------- */
+let IQ = "";
+const MODS = [
+  ["fichas","Fichas de curso","Informações e mensagens prontas de cada curso"],
+  ["teste","Teste de Perfil","3 perguntas para o candidato indeciso"],
+  ["comp","Comparativo de cursos","Até 4 cursos lado a lado"],
+  ["duv","Dúvidas do novo modelo acadêmico","Respostas curtas sobre as mudanças de 2027"],
+  ["desc","Cursos descontinuados","Lista e mensagens para responder"]
+];
+function buscaGeral(q){
+  const r = [];
+  D.cursos.forEach(c => { if (norm(c.n).includes(q)) r.push({t:"Curso", tit:c.n, sub:`${c.grau} · ${c.m}`, act:`data-curso="${c.id}"`}); });
+  FAQ_TEMAS.forEach(t => t.itens.forEach(([id,qq,a]) => { if (norm(qq+" "+a.replace(/<[^>]+>/g," ")).includes(q)) r.push({t:"Dúvida", tit:fixPolo(qq), sub:t.tema, act:`data-faq="${id}"`}); }));
+  DESC_LIST.forEach(d => { if (norm(d).includes(q)) r.push({t:"Descontinuado", tit:d, sub:"Curso descontinuado", act:"data-descirr"}); });
+  MODS.forEach(([k,n,d]) => { if (norm(n+" "+d).includes(q)) r.push({t:"Módulo", tit:n, sub:d, act:`data-ir="${k}"`}); });
+  return r;
+}
+function telaInicio(){
+  const q = norm(IQ.trim());
+  const res = q.length>1 ? buscaGeral(q) : [];
+  const ordem = {"Curso":0,"Descontinuado":1,"Dúvida":2,"Módulo":3};
+  res.sort((a,b)=>ordem[a.t]-ordem[b.t]);
+  const cls = {"Curso":"","Dúvida":"semi","Descontinuado":"lanc","Módulo":""};
+  return `<div class="inicio-topo"><span class="eyebrow">Playbook Interativo UniCesumar</span>
+      <h1>O que você precisa encontrar?</h1>
+      <p class="sub">Busque por curso, dúvida ou assunto, por exemplo: farmacia, prova presencial, estágio.</p>
+      <div class="busca grande">${svg("busca")}<input id="buscaIni" type="search" placeholder="Digite um curso ou uma palavra-chave" value="${esc(IQ)}" autocomplete="off">
+        ${q.length>1 ? `<div class="sug ini">${res.length ? res.slice(0,12).map(x=>`<button ${x.act}><span class="sug-main"><b>${esc(x.tit)}</b><small>${esc(x.sub)}</small></span><span class="tag ${cls[x.t]}">${x.t}</span></button>`).join("") : '<p class="vazio">Nada encontrado. Tente outra palavra.</p>'}</div>` : ""}
+      </div></div>
+    <div class="atalhos">${MODS.map(([k,n,d])=>`<button class="atalho" data-ir="${k}">${svg(k==="duv"?"duv":k)}<b>${esc(n)}</b><span>${esc(d)}</span></button>`).join("")}</div>`;
+}
+function telaAprov(){
+  return `<div class="head"><span class="eyebrow">Somente consulta</span><h1>Aproveitamento de estudos</h1></div>
+    <div class="aviso">${svg("alerta")}<span><b>Em atualização.</b> Estamos revisando as regras de aproveitamento de estudos de acordo com o novo modelo acadêmico. Assim que forem confirmadas, esta área será atualizada e liberada para consulta.</span></div>`;
+}
+const FORM_URL = "";   // cole aqui o link de incorporação do Google Forms
+function telaFeed(){
+  return `<div class="head"><span class="eyebrow">Sua opinião ajuda a melhorar</span><h1>Feedback</h1>
+      <p class="sub">Encontrou alguma informação errada, sentiu falta de algo ou tem uma sugestão? Conte pra gente.</p></div>
+    ${FORM_URL ? `<div class="card" style="padding:0;overflow:hidden"><iframe class="form" src="${FORM_URL}" title="Formulário de feedback">Carregando…</iframe></div>`
+      : `<div class="card form-vazio">${svg("feed")}<b>O formulário de feedback vai aparecer aqui</b><p class="sub">Ele abre dentro do próprio Playbook, sem sair da página.</p></div>`}`;
+}
+/* ---------- render e eventos ---------- */
+function render(){
+  nav();
+  tela.innerHTML = TELA==="fichas" ? (FICHA ? telaFicha() : telaFichas()) : TELA==="comp" ? telaComp() : TELA==="duv" ? telaDuvidas() : TELA==="desc" ? telaDesc() : TELA==="inicio" ? telaInicio() : TELA==="aprov" ? telaAprov() : TELA==="feed" ? telaFeed() : telaTeste();
+  document.body.classList.toggle("com-ficha", !!(TELA==="fichas" && FICHA && FICHA_ID[FICHA]));
+  if (TELA==="fichas" && FICHA && FICHA_ID[FICHA]) montarFrame();
+}
+document.addEventListener("click", ev => {
+  const tl = ev.target.closest('a[href^="#faq-"]');
+  if (tl){ ev.preventDefault(); const id = tl.getAttribute("href").slice(5); const el = document.getElementById("faq-"+id); if (el){ el.open = true; el.scrollIntoView({block:"start", behavior:"smooth"}); } return; }
+  const b = ev.target.closest("button"); if(!b) return;
+  const d = b.dataset;
+  if (d.ir){ TELA=d.ir; FICHA=null; render(); scrollTo(0,0); return; }
+  if (d.voltarficha!==undefined){ FICHA=null; render(); return; }
+  if (d.faq){ TELA="duv"; FAQ_ABRIR=d.faq; FAQQ=""; render(); const el=document.getElementById("faq-"+d.faq); if(el) el.scrollIntoView({block:"start"}); FAQ_ABRIR=null; return; }
+  if (d.copiar!==undefined){ copiar(b, d.copiar); return; }
+  if (d.area){ AREA=d.area; TODOS=false; render(); return; }
+  if (d.todos!==undefined){ TODOS=true; AREA=null; render(); return; }
+  if (d.voltar!==undefined){ TODOS=false; AREA=null; render(); return; }
+  if (d.curso){ abrirFicha(d.curso); return; }
+  if (d.descirr!==undefined){ TELA="desc"; render(); scrollTo(0,0); return; }
+  if (d.comparar!==undefined){ CMP = SEL.slice(0,4); CMPQ=""; TELA="comp"; render(); scrollTo(0,0); return; }
+  if (d.add){ if(CMP.length<4) CMP.push(d.add); CMPQ=""; render(); document.getElementById("cmpBusca")?.focus(); return; }
+  if (d.tirar){ CMP = CMP.filter(x=>x!==d.tirar); render(); return; }
+  if (d.limpar!==undefined){ CMP=[]; render(); return; }
+  if (d.imgcmp!==undefined){ copiarShot(b); return; }
+  if (d.baixarcmp!==undefined){ baixarShot(); return; }
+  if (d.reiniciar!==undefined){ for(const k in T) delete T[k]; OPC=[]; SEL=[]; MSG=null; render(); return; }
+  if (d.p1){ escolher(b, ()=>{ const o=P1.op.find(o=>o[0]===d.p1); if(o[2]==="Pergunta de vocação") T.naoSei=true; else T.area=o[1]; }); return; }
+  if (d.p1b){ escolher(b, ()=>{ const o=P1b.op.find(o=>o[0]===d.p1b); T.area=o[2].replace("P2 - ",""); }); return; }
+  if (d.p2){ escolher(b, ()=>{ const o=P2de(T.area).op.find(o=>o[0]===d.p2); T.grupo=o[2].replace("Grupo ",""); }); return; }
+  if (d.p3){ escolher(b, ()=>{ T.estilo=d.p3; }); return; }
+  if (d.incluir){ SEL = SEL.includes(d.incluir) ? SEL.filter(x=>x!==d.incluir) : OPC.filter(x=>x===d.incluir||SEL.includes(x)); MSG=null; render(); return; }
+  if (d.copiarmsg!==undefined){ copiar(b, document.getElementById("msgEdit").value); return; }
+  if (d.img!==undefined){ copiarImagem(b); return; }
+});
+document.addEventListener("input", ev => {
+  if (ev.target.id==="msgEdit"){ MSG = ev.target.value; return; }
+  if (ev.target.id==="buscaIni"){ IQ = ev.target.value; const pos=ev.target.selectionStart; render(); const i=document.getElementById("buscaIni"); i.focus(); i.setSelectionRange(pos,pos); return; }
+  if (ev.target.id==="buscaFaq"){ FAQQ = ev.target.value; const pos=ev.target.selectionStart; render(); const i=document.getElementById("buscaFaq"); i.focus(); i.setSelectionRange(pos,pos); return; }
+  if (ev.target.id==="cmpBusca"){ CMPQ = ev.target.value; const pos=ev.target.selectionStart; render(); const i=document.getElementById("cmpBusca"); i.focus(); i.setSelectionRange(pos,pos); return; }
+  if (ev.target.id!=="busca") return;
+  BUSCA = ev.target.value; const pos = ev.target.selectionStart;
+  render(); const i=document.getElementById("busca"); i.focus(); i.setSelectionRange(pos,pos);
+});
+render();
+
+/* ---------- login ---------- */
+(function(){
+  const K = "\x31\x61\x62\x6e\x6c\x66";                       // senha embaralhada (não fica escrita no código)
+  const h = s => { let x = 0x811c9dc5; for (let r=0;r<3;r++) for (const ch of ("vtr#"+s+"#pb")) { x ^= ch.charCodeAt(0); x = Math.imul(x, 0x01000193) >>> 0; } return x.toString(36); };
+  const lock = document.getElementById("lock"), senha = document.getElementById("lkSenha"), erro = document.getElementById("lkErro");
+  let marca = "uni";
+  const ok = () => { try { return sessionStorage.getItem("pb-uni") === K; } catch(e){ return false; } };
+  if (!ok()) lock.hidden = false;
+  document.querySelectorAll(".lk-brand").forEach(b => b.addEventListener("click", () => {
+    marca = b.dataset.m;
+    document.querySelectorAll(".lk-brand").forEach(x => x.setAttribute("aria-pressed", x===b));
+    const assel = marca === "assel";
+    document.getElementById("lkSenhaBox").hidden = assel;
+    document.getElementById("lkAssel").hidden = !assel;
+    document.getElementById("lkEntrar").disabled = assel;
+    document.getElementById("lkEntrar").textContent = assel ? "Em breve" : "Entrar";
+  }));
+  document.getElementById("lkOlho").addEventListener("click", () => { senha.type = senha.type === "password" ? "text" : "password"; });
+  document.getElementById("lkForm").addEventListener("submit", ev => {
+    ev.preventDefault();
+    if (marca !== "uni") return;
+    if (h(senha.value.trim()) === K){ try { sessionStorage.setItem("pb-uni", K); } catch(e){} lock.hidden = true; senha.value = ""; erro.textContent = ""; }
+    else { erro.textContent = "Senha incorreta, tente de novo."; senha.select(); }
+  });
+  document.getElementById("sair").addEventListener("click", () => { try { sessionStorage.removeItem("pb-uni"); } catch(e){} lock.hidden = false; senha.focus(); });
+})();
+</script>
+
+</body></html>
